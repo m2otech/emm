@@ -1,18 +1,18 @@
 ﻿/* ***************************************************************************
- * This file is part of Event Music Machine.
+ * This file is part of EventMusicSoftware.
  *
- * Event Music Machine is free software: you can redistribute it and/or modify
+ * EventMusicSoftware is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * Event Music Machine is distributed in the hope that it will be useful,
+ * EventMusicSoftware is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with Event Music Machine. If not, see <http://www.gnu.org/licenses/>.
+ * along with EventMusicSoftware. If not, see <http://www.gnu.org/licenses/>.
  * ************************************************************************* */
 
 #include <QMutex>
@@ -23,6 +23,8 @@
 #include "model/audio/bassasiodevice.h"
 
 #include "view/mainwindow.h"
+
+extern bool DEMO;
 
 Configuration* Configuration::instance = 0;
 
@@ -203,9 +205,6 @@ void Configuration::setSlotTimeSize(int size) {
 void Configuration::readData()
 {
     QSettings settings(Configuration::getStorageLocation() + "/config.ini", QSettings::IniFormat);
-    horizontalSlots = settings.value("Slots/Horizontal",5).toInt();
-    verticalSlots = settings.value("Slots/Vertical",5).toInt();
-    layer = settings.value("Slots/Layer",1).toInt();
     pflDriver = settings.value("PFL/Type",0).toInt();
     pflDevice = settings.value("PFL/Device",1).toInt();
     pflChannel = settings.value("PFL/Channel",1).toInt();
@@ -221,11 +220,37 @@ void Configuration::readData()
     pauseButton = settings.value("Slots/PauseButton",false).toBool();
     slotTimeSize = settings.value("Slots/TimeSize",10).toInt();
 
+    // DEMO (7x7 slots)
+    if (DEMO)
+    {
+        horizontalSlots = 7;
+        verticalSlots = 7;
+    }
+    else
+    {
+        horizontalSlots = settings.value("Slots/Horizontal",5).toInt();
+        verticalSlots = settings.value("Slots/Vertical",5).toInt();
+    }
+
+    // DEMO (1 layer only)    
+    if (DEMO)
+        layer = 1;
+    else
+        layer = settings.value("Slots/Layer",1).toInt();
+
     layers.clear();
     for (int i=0;i<layer;i++) {
         LayerData *data = new LayerData(i+1);
-        data->setName(settings.value("Layer"+QString::number(i+1)+"/Name","Layer "+QString::number(i+1)).toString());
-        data->setVisible(settings.value("Layer"+QString::number(i+1)+"/Visible",true).toBool());
+        if (DEMO)
+        {
+            data->setName(settings.value("Demo/Name","Demo").toString());
+            data->setVisible(settings.value("Demo/Visible",true).toBool());
+        }
+        else
+        {
+            data->setName(settings.value("Layer"+QString::number(i+1)+"/Name","Layer "+QString::number(i+1)).toString());
+            data->setVisible(settings.value("Layer"+QString::number(i+1)+"/Visible",true).toBool());
+        }
         layers.insert(i,data);
     }
 }

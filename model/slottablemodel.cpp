@@ -1,18 +1,18 @@
 ﻿/* ***************************************************************************
- * This file is part of Event Music Machine.
+ * This file is part of EventMusicSoftware.
  *
- * Event Music Machine is free software: you can redistribute it and/or modify
+ * EventMusicSoftware is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * Event Music Machine is distributed in the hope that it will be useful,
+ * EventMusicSoftware is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with Event Music Machine. If not, see <http://www.gnu.org/licenses/>.
+ * along with EventMusicSoftware. If not, see <http://www.gnu.org/licenses/>.
  * ************************************************************************* */
 
 #include <QColor>
@@ -21,6 +21,8 @@
 #include <QSqlQuery>
 #include "model/audio/cartslot.h"
 #include "slottablemodel.h"
+
+extern bool DEMO;
 
 SlotTableModel::SlotTableModel(QObject *parent) :
     QAbstractTableModel(parent)
@@ -45,12 +47,13 @@ QVariant SlotTableModel::data(const QModelIndex &index, int role) const
         CartSlot* s = slot.at(row);
         switch (index.column())
         {
+        // m2: changed order
         case 0: return s->getNumber();
-        case 1: return s->getText1();
-        case 2: return s->getFileName();
-        case 3: return s->getColor();
-        case 4: return s->getFontColor();
-        case 5: {
+        case 3: return s->getText1();
+        case 5: return s->getFileName();
+        case 1: return s->getColor();
+        case 2: return s->getFontColor();
+        case 4: {
             int usedId = CartSlot::isUsed(s->getFileName());
             if (usedId == -1) {
                 return "X";
@@ -61,13 +64,15 @@ QVariant SlotTableModel::data(const QModelIndex &index, int role) const
     }
     else if (role == Qt::BackgroundRole || role == Qt::ForegroundRole)
     {
-        if (index.column() > 2)
+        // m2: changed order
+        //if (index.column() > 2)
+        if ( index.column() == 1 || index.column() == 2 )
         {
             CartSlot* s = slot.at(index.row());
             switch (index.column())
             {
-            case 3: return QColor(s->getColor());
-            case 4: return QColor(s->getFontColor());
+            case 1: return QColor(s->getColor());
+            case 2: return QColor(s->getFontColor());
             }
         }
 
@@ -81,15 +86,16 @@ QVariant SlotTableModel::headerData(int section, Qt::Orientation orientation, in
     {
         switch (section)
         {
+        // m2: changed order
         case 0: return "ID";
-        case 1: return "Name";
-        case 2: return "Datei";
+        case 3: return "Name";
+        case 5: return "Datei";
         // m2: changed labels
-        case 3: return "HF";
-        case 4: return "SF";
+        case 1: return "HF";
+        case 2: return "SF";
         //case 3: return "Farbe";
         //case 4: return "Textfarbe";
-        case 5: return "SlotID";
+        case 4: return "SlotID";
         }
     }
     return QVariant();
@@ -122,10 +128,15 @@ void SlotTableModel::loadData()
     this->beginResetModel();
     QSqlQuery query("SELECT slot_id FROM slots");
     QList<CartSlot*> slotList;
+    int i = 0;
     while (query.next())
     {
         CartSlot* s = CartSlot::getObjectWithNumber(query.value(0).toInt(),true);
         slotList.append(s);
+        i++;
+        // DEMO (max 60 entries)
+        if (DEMO && i >= 60)
+            break;
     }
     slot = slotList;
 

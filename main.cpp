@@ -1,18 +1,18 @@
 ﻿/* ***************************************************************************
- * This file is part of Event Music Machine.
+ * This file is part of EventMusicSoftware.
  *
- * Event Music Machine is free software: you can redistribute it and/or modify
+ * EventMusicSoftware is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * Event Music Machine is distributed in the hope that it will be useful,
+ * EventMusicSoftware is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with Event Music Machine. If not, see <http://www.gnu.org/licenses/>.
+ * along with EventMusicSoftware. If not, see <http://www.gnu.org/licenses/>.
  * ************************************************************************* */
 
 #include <QApplication>
@@ -32,6 +32,8 @@
 #include "view/mainwindow.h"
 #include "view/splashscreen.h"
 
+bool DEMO = true;
+
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
@@ -42,7 +44,15 @@ int main(int argc, char *argv[])
 
     SplashScreen *s = new SplashScreen(pixmap);
     s->show();
-    s->showMessage("Event Music Machine starten...");
+
+    // m2: Make sure splash is drawn
+    a.processEvents();
+
+    s->showMessage("EventMusicSoftware starten...");
+
+    // DEMO Store config in current directory
+    if (DEMO)
+        Configuration::setStorageLocation(QDir::currentPath());
 
     QString path = Configuration::getStorageLocation();
     if (path == "") {
@@ -73,14 +83,17 @@ int main(int argc, char *argv[])
         QMessageBox::warning(s,QObject::tr("Keine Verbindung zum Slot-Speicher"),QObject::tr("Es konnte keine Verbindung zum Slot-Speicher hergestellt werden!"));
     }
 
-    s->showMessage("Verbindung zur Tastatur herstellen...");
-    KeyboardController *keyController = KeyboardController::getInstance();
-    QObject::connect(keyController, SIGNAL(errorOccured(QString)), s, SLOT(showErrorMessage(QString)));
-    QObject::connect(keyController, SIGNAL(keyPressed(int,int)), &w, SLOT(keyboardSignal(int,int)));
-    keyController->initializeKeyboardController();
+    // DEMO Keyboard disabled
+    if (!DEMO)
+    {
+        s->showMessage("Verbindung zur Tastatur herstellen...");
+        KeyboardController *keyController = KeyboardController::getInstance();
+        QObject::connect(keyController, SIGNAL(errorOccured(QString)), s, SLOT(showErrorMessage(QString)));
+        QObject::connect(keyController, SIGNAL(keyPressed(int,int)), &w, SLOT(keyboardSignal(int,int)));
+        keyController->initializeKeyboardController();
+    }
 
     s->showMessage("Audiogeräte initialisieren...");
-
     AudioProcessor::getInstance()->initDevices(&w);
 
     s->showMessage("Audio-Plugins laden...");
@@ -115,6 +128,8 @@ int main(int argc, char *argv[])
         }
     }
     s->showMessage("Benutzeroberfläche initialisieren...");
+    Sleep(1000);
+
     w.init();
     s->close();
 

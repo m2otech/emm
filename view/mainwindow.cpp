@@ -1,18 +1,18 @@
 ﻿/* ***************************************************************************
- * This file is part of Event Music Machine.
+ * This file is part of EventMusicSoftware.
  *
- * Event Music Machine is free software: you can redistribute it and/or modify
+ * EventMusicSoftware is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * Event Music Machine is distributed in the hope that it will be useful,
+ * EventMusicSoftware is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with Event Music Machine. If not, see <http://www.gnu.org/licenses/>.
+ * along with EventMusicSoftware. If not, see <http://www.gnu.org/licenses/>.
  * ************************************************************************* */
 
 #include <QFileDialog>
@@ -47,6 +47,8 @@
 #include "ui_mainwindow.h"
 
 #include <QMutex>
+
+extern bool DEMO;
 
 MainWindow* MainWindow::instance = 0;
 
@@ -113,6 +115,15 @@ void MainWindow::init() {
     connect(ui->pauseAllButton, SIGNAL(clicked()), this, SLOT(pauseSlots()));
     connect(ui->stopAllButton, SIGNAL(clicked()), this, SLOT(stopSlots()));
 
+    // DEMO Hide Pause All und Stop All buttons, disable Menu items
+    if (DEMO)
+    {
+        ui->pauseAllButton->hide();
+        ui->stopAllButton->hide();
+        ui->resetCountersAction->setEnabled(false);
+        ui->colorAction->setEnabled(false);
+        ui->setConfigurationAction->setEnabled(false);
+    }
     // m2: Slot-Store popup
     ssdGlobal = new SlotStoreDialog(this);
 
@@ -237,6 +248,8 @@ void MainWindow::keyboardSignal(int key, int pressed)
             CartSlot *slot = AudioProcessor::getInstance()->getCartSlotWithNumber(key2);
             if (conf->getLayerKeyboardSync()) {
                 key2 += (conf->getHorizontalSlots()*conf->getVerticalSlots()*ui->layerSelector->getSelectedButton());
+                // m2: update slot (in current layer)
+                slot = AudioProcessor::getInstance()->getCartSlotWithNumber(key2);
                 // m2: no need to jump back to previous layer (layer not changed)
                 prevLayer = -1;
             } else {
@@ -246,7 +259,6 @@ void MainWindow::keyboardSignal(int key, int pressed)
                     // if we are already on layer 1 we don't need to switch back to this layer
                     if (prevLayer == 1)
                         prevLayer = -1;
-                    //qDebug("Setting: %d", prevLayer);
                 }
                 ui->layerSelector->selectButtonAt(0);
             }

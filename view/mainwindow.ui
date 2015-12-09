@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Event Music Machine 2.1</string>
+   <string>EventMusicSoftware</string>
   </property>
   <property name="windowIcon">
    <iconset resource="icons.qrc">
@@ -77,14 +77,14 @@
             </property>
             <property name="minimumSize">
              <size>
-              <width>28</width>
-              <height>28</height>
+              <width>56</width>
+              <height>56</height>
              </size>
             </property>
             <property name="maximumSize">
              <size>
-              <width>28</width>
-              <height>28</height>
+              <width>56</width>
+              <height>56</height>
              </size>
             </property>
             <property name="baseSize">
@@ -92,6 +92,9 @@
               <width>28</width>
               <height>28</height>
              </size>
+            </property>
+            <property name="autoFillBackground">
+             <bool>false</bool>
             </property>
             <property name="text">
              <string/>
@@ -118,14 +121,14 @@
             </property>
             <property name="minimumSize">
              <size>
-              <width>28</width>
-              <height>28</height>
+              <width>56</width>
+              <height>56</height>
              </size>
             </property>
             <property name="maximumSize">
              <size>
-              <width>28</width>
-              <height>28</height>
+              <width>56</width>
+              <height>56</height>
              </size>
             </property>
             <property name="baseSize">
@@ -545,7 +548,7 @@ font-weight:bold;</string>
   </action>
   <action name="aboutAction">
    <property name="text">
-    <string>Über die Event Music Machine</string>
+    <string>Über die EventMusicSoftware</string>
    </property>
   </action>
   <action name="slotAction">

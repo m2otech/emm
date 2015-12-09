@@ -1,18 +1,18 @@
 ﻿/* ***************************************************************************
- * This file is part of Event Music Machine.
+ * This file is part of EventMusicSoftware.
  *
- * Event Music Machine is free software: you can redistribute it and/or modify
+ * EventMusicSoftware is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * Event Music Machine is distributed in the hope that it will be useful,
+ * EventMusicSoftware is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with Event Music Machine. If not, see <http://www.gnu.org/licenses/>.
+ * along with EventMusicSoftware. If not, see <http://www.gnu.org/licenses/>.
  * ************************************************************************* */
 
 #include <QFile>
@@ -34,15 +34,16 @@ SlotStoreDialog::SlotStoreDialog(QWidget *parent) :
     sortModel = new QSortFilterProxyModel();
     sortModel->setSourceModel(model);
     ui->storeTable->setModel(sortModel);
+    // m2: changed order
     ui->storeTable->horizontalHeader()->setSectionResizeMode(0,QHeaderView::ResizeToContents);
-    ui->storeTable->horizontalHeader()->setSectionResizeMode(1,QHeaderView::Stretch);
-    ui->storeTable->horizontalHeader()->setSectionResizeMode(2,QHeaderView::Stretch);
-    ui->storeTable->horizontalHeader()->setSectionResizeMode(3,QHeaderView::Fixed);
+    ui->storeTable->horizontalHeader()->setSectionResizeMode(3,QHeaderView::Stretch);
+    ui->storeTable->horizontalHeader()->setSectionResizeMode(5,QHeaderView::Stretch);
+    ui->storeTable->horizontalHeader()->setSectionResizeMode(1,QHeaderView::Fixed);
+    ui->storeTable->horizontalHeader()->setSectionResizeMode(2,QHeaderView::Fixed);
     ui->storeTable->horizontalHeader()->setSectionResizeMode(4,QHeaderView::Fixed);
-    ui->storeTable->horizontalHeader()->setSectionResizeMode(5,QHeaderView::Fixed);
-    ui->storeTable->horizontalHeader()->resizeSection(3,25);
-    ui->storeTable->horizontalHeader()->resizeSection(4,25);
-    ui->storeTable->horizontalHeader()->resizeSection(5,45);
+    ui->storeTable->horizontalHeader()->resizeSection(1,25);
+    ui->storeTable->horizontalHeader()->resizeSection(2,25);
+    ui->storeTable->horizontalHeader()->resizeSection(4,70);
     connect(ui->controlBar, SIGNAL(addClicked()), this, SLOT(addSlot()));
     connect(ui->controlBar, SIGNAL(editClicked()), this, SLOT(editSlot()));
     connect(ui->controlBar, SIGNAL(removeClicked()), this, SLOT(removeSlot()));

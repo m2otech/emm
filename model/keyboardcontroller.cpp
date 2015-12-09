@@ -1,18 +1,18 @@
 ﻿/* ***************************************************************************
- * This file is part of Event Music Machine.
+ * This file is part of EventMusicSoftware.
  *
- * Event Music Machine is free software: you can redistribute it and/or modify
+ * EventMusicSoftware is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * Event Music Machine is distributed in the hope that it will be useful,
+ * EventMusicSoftware is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with Event Music Machine. If not, see <http://www.gnu.org/licenses/>.
+ * along with EventMusicSoftware. If not, see <http://www.gnu.org/licenses/>.
  * ************************************************************************* */
 
 #include <QMutex>
@@ -27,7 +27,9 @@ void KeyboardController::initializeKeyboardController()
 {
     hMWXUSB = LoadLibrary(L"MWXUSB.DLL");
     if (hMWXUSB == NULL) {
+        // TODO Error durch Hinweis ersetzen oder gar nichts
         emit errorOccured(tr("Der Tastaturtreiber ist nicht korrekt installiert. Die Steuerung durch die externe Tastatur wird deaktiviert."));
+        //QMessageBox::information(this,"Tastatur nicht gefunden","Die Steuerung durch die externe Tastatur wird deaktiviert.");
         return;
     }
     lpopenusb = (OPEN_USB*)GetProcAddress(hMWXUSB,"Open_USB");

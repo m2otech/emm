@@ -143,7 +143,6 @@ void AbstractAudioObject::pause()
 {
     if (playing)
     {
-        //qDebug("Pause called");
         BASS_ChannelPause(stream);
         BASS_Mixer_ChannelFlags(stream, BASS_MIXER_PAUSE, BASS_MIXER_PAUSE);
         playing = false;
@@ -152,7 +151,6 @@ void AbstractAudioObject::pause()
     }
     else
     {
-        //qDebug("Pause (restart) called");
         BASS_Mixer_ChannelFlags(stream, 0, BASS_MIXER_PAUSE);
         BASS_ChannelSetAttribute(stream,BASS_ATTRIB_VOL,1);
         BASS_ChannelPlay(stream,false);

@@ -42,8 +42,6 @@ public:
     void fadeOutPause(int ms);
     bool isMissing();
     double getTimeLeft();
-    // m2: redeclared as slot to call it asynchronously
-    //void pause();
     virtual void loadStream(double vol=0);
 
 protected:

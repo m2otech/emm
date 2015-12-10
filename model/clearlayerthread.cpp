@@ -20,8 +20,6 @@
 #include "model/configuration.h"
 #include "view/cartslotwidget.h"
 
-#include "view/mainwindow.h"
-
 ClearLayerThread::ClearLayerThread(int selectedLayer, QObject *parent) :
     QThread(parent)
 {

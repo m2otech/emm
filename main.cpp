@@ -32,10 +32,30 @@
 #include "view/mainwindow.h"
 #include "view/splashscreen.h"
 
+#include <QProcess>
+
 bool DEMO = true;
+
+bool isRunningTwice(const QString &process) {
+  // Use Windows tasklist cmd to check if process running
+  QProcess tasklist;
+  tasklist.start(
+        "tasklist",
+        QStringList() << "/NH"
+                      << "/FO" << "CSV"
+                      << "/FI" << QString("IMAGENAME eq %1").arg(process));
+  tasklist.waitForFinished();
+  QString output = tasklist.readAllStandardOutput();
+  // Check if there are two entries
+  return ( output.startsWith(QString("\"%1").arg(process)) & output.contains(QString("\n\"%1").arg(process)) );
+}
 
 int main(int argc, char *argv[])
 {
+    // Only one instance allowed
+    if (isRunningTwice("EventMusicSoftware.exe"))
+        return 0;
+
     QApplication a(argc, argv);
 
     MainWindow w;
@@ -45,7 +65,7 @@ int main(int argc, char *argv[])
     SplashScreen *s = new SplashScreen(pixmap);
     s->show();
 
-    // m2: Make sure splash is drawn
+    // Make sure splash is drawn
     a.processEvents();
 
     s->showMessage("EventMusicSoftware starten...");
@@ -102,6 +122,7 @@ int main(int argc, char *argv[])
     s->showMessage("Slots laden und überprüfen...");
 
     int number = 1;
+    bool skipCheck = false;
     Configuration *config = Configuration::getInstance();
     for (int i=0;i<config->getLayer();i++)
     {
@@ -111,17 +132,12 @@ int main(int argc, char *argv[])
             {
                 CartSlot *slot = AudioProcessor::getInstance()->getCartSlotWithNumber(number);
                 s->showMessage("Slots laden und überprüfen...\r\n"+slot->getText1());
-                if (slot->isMissing()) {
-                    //QMessageBox::information(s,"Datei wurde nicht gefunden","Slot "+QString::number(slot->getNumber())+" ("+slot->getText1()+") konnte nicht geladen werden, weil die Datei nicht gefunden wurde!");
-
-                    // m2: Ask user whether to ignore further "missing files"
+                if ( slot->isMissing() && !skipCheck) {
+                    // Ignore further "missing files"?
                     QMessageBox::StandardButton reply;
                     reply = QMessageBox::question(s, QString::fromUtf8("Datei nicht gefunden"), "Slot "+QString::number(slot->getNumber())+" ("+slot->getText1()+") konnte nicht geladen werden, weil die Datei nicht gefunden wurde! \n \n Sollen weitere Meldungen angezeigt werden?", QMessageBox::Yes|QMessageBox::No);
-                    if (reply == QMessageBox::No) {
-                        k = config->getHorizontalSlots();
-                        j = config->getVerticalSlots();
-                        i = config->getLayer();
-                    }
+                    if (reply == QMessageBox::No)
+                        skipCheck = true;
                 }
                 number++;
             }

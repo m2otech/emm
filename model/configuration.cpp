@@ -24,7 +24,7 @@
 
 #include "view/mainwindow.h"
 
-extern bool DEMO;
+extern bool DEMO, DEMO_M;
 
 Configuration* Configuration::instance = 0;
 
@@ -232,11 +232,24 @@ void Configuration::readData()
         verticalSlots = settings.value("Slots/Vertical",5).toInt();
     }
 
+    // DEMO_M max 10x10 slots
+    if (DEMO_M)
+    {
+        if (horizontalSlots > 10)
+            horizontalSlots = 10;
+        if (verticalSlots > 10)
+            verticalSlots = 10;
+    }
+
     // DEMO (1 layer only)    
     if (DEMO)
         layer = 1;
     else
         layer = settings.value("Slots/Layer",1).toInt();
+
+    // DEMO_M 5 layers
+    if (DEMO_M && layer > 5)
+        layer = 5;
 
     layers.clear();
     for (int i=0;i<layer;i++) {

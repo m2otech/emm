@@ -18,7 +18,7 @@
 #include "aboutdialog.h"
 #include "ui_aboutdialog.h"
 
-extern bool DEMO;
+extern bool DEMO, DEMO_M;
 
 AboutDialog::AboutDialog(QWidget *parent) :
     QDialog(parent),
@@ -27,7 +27,7 @@ AboutDialog::AboutDialog(QWidget *parent) :
     ui->setupUi(this);
     connect(ui->closeButton, SIGNAL(clicked()),this,SLOT(close()));
 
-    if (DEMO)
+    if (DEMO || DEMO_M)
         ui->versionLabel->setText("Demo Version");
 }
 

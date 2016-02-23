@@ -17,20 +17,20 @@
 
 #include <QMutex>
 #include <QTimer>
+#include <QMessageBox>
 #include "keyboardcontroller.h"
 
 KeyboardController* KeyboardController::instance = 0;
 int KeyboardController::keyCommandCount = 0;
 int KeyboardController::playerCount = 0;
 
-void KeyboardController::initializeKeyboardController()
+int KeyboardController::initializeKeyboardController()
 {
     hMWXUSB = LoadLibrary(L"MWXUSB.DLL");
     if (hMWXUSB == NULL) {
-        // TODO Error durch Hinweis ersetzen oder gar nichts
-        emit errorOccured(tr("Der Tastaturtreiber ist nicht korrekt installiert. Die Steuerung durch die externe Tastatur wird deaktiviert."));
-        //QMessageBox::information(this,"Tastatur nicht gefunden","Die Steuerung durch die externe Tastatur wird deaktiviert.");
-        return;
+        // m2: Warning wird in main.cpp ausgegeben
+        //emit errorOccured(tr("Der Tastaturtreiber ist nicht korrekt installiert. Die Steuerung durch die externe Tastatur wird deaktiviert."));
+        return 1;
     }
     lpopenusb = (OPEN_USB*)GetProcAddress(hMWXUSB,"Open_USB");
     lpcloseusb=(CLOSE_USB*)GetProcAddress(hMWXUSB,"Close_USB");
@@ -39,19 +39,21 @@ void KeyboardController::initializeKeyboardController()
     lpled=(ACCEPT_LED*)GetProcAddress(hMWXUSB,"Accept_LED");
 
     if (lpopenusb == NULL || lpcloseusb == NULL || lpcallback == NULL || lpposkey == NULL || lpled == NULL) {
-        emit errorOccured(tr("Fehler bei der Initialisierung der Verbindung zur Tastatur. Die Steuerung durch die externe Tastatur wird deaktiviert."));
-        return;
+        //emit errorOccured(tr("Fehler bei der Initialisierung der Verbindung zur Tastatur. Die Steuerung durch die externe Tastatur wird deaktiviert."));
+        return 2;
     }
 
     unsigned char ucOpen = (*lpopenusb)();
     if(ucOpen != 0)
     {
-        emit errorOccured(tr("Es konnte keine Verbindung zur Controller-Tastatur hergestellt werden. Bitte vergewissern Sie sich, dass die Tastatur angeschlossen ist. Die Steuerung durch die externe Tastatur wird deaktiviert."));
+        //emit errorOccured(tr("Es konnte keine Verbindung zur Controller-Tastatur hergestellt werden. Bitte vergewissern Sie sich, dass die Tastatur angeschlossen ist. Die Steuerung durch die externe Tastatur wird deaktiviert."));
         closeKeyboardController();
-        return;
+        return 3;
     }
     opened = true;
     (*lpcallback)( &KeyboardController::keyboardCallback );
+
+    return 0;
 }
 
 void KeyboardController::closeKeyboardController()

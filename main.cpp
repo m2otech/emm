@@ -34,7 +34,8 @@
 
 #include <QProcess>
 
-bool DEMO = true;
+bool DEMO = false;
+bool DEMO_M = true;
 
 bool isRunningTwice(const QString &process) {
   // Use Windows tasklist cmd to check if process running
@@ -110,7 +111,13 @@ int main(int argc, char *argv[])
         KeyboardController *keyController = KeyboardController::getInstance();
         QObject::connect(keyController, SIGNAL(errorOccured(QString)), s, SLOT(showErrorMessage(QString)));
         QObject::connect(keyController, SIGNAL(keyPressed(int,int)), &w, SLOT(keyboardSignal(int,int)));
-        keyController->initializeKeyboardController();
+        int keyErr = keyController->initializeKeyboardController();
+        if (keyErr == 1)
+            QMessageBox::information(s,QObject::tr("EMS"),QObject::tr("Der Treiber für die Preh-Tastatur ist nicht installiert. Die Steuerung durch die Preh-Tastatur wird deaktiviert."));
+        else if (keyErr == 2)
+            QMessageBox::warning(s,QObject::tr("EMS"),QObject::tr("Die Preh-Tastatur konnte nicht initialisiert werden. Die Steuerung durch die Preh-Tastatur wird deaktiviert."));
+        else if (keyErr == 3)
+            QMessageBox::warning(s,QObject::tr("EMS"),QObject::tr("Die Verbindung zur Preh-Tastatur konnte nicht hergestellt werden. Bitte vergewissern Sie sich, dass die Preh-Tastatur korrekt angeschlossen ist und starten Sie danach das Programm neu."));
     }
 
     s->showMessage("Audiogeräte initialisieren...");

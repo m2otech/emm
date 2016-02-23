@@ -31,7 +31,7 @@
 
 #include "mainwindow.h"
 
-extern bool DEMO;
+extern bool DEMO, DEMO_M;
 
 CartSlotWidget::CartSlotWidget(int number, QWidget *parent) :
     QWidget(parent),

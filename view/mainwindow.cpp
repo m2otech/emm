@@ -48,7 +48,7 @@
 
 #include <QMutex>
 
-extern bool DEMO;
+extern bool DEMO, DEMO_M;
 
 MainWindow* MainWindow::instance = 0;
 
@@ -124,6 +124,12 @@ void MainWindow::init() {
         ui->colorAction->setEnabled(false);
         ui->setConfigurationAction->setEnabled(false);
     }
+    else if (DEMO_M)
+    {
+        ui->setConfigurationAction->setVisible(false);
+        ui->colorAction->setVisible(false);
+    }
+
     // m2: Slot-Store popup
     ssdGlobal = new SlotStoreDialog(this);
 
@@ -204,11 +210,15 @@ void MainWindow::keyboardSignal(int key, int pressed)
     if (pressed==0) //pressed
     {
         //ui->lineEdit->setText(QString("Pressed key %1").arg(key, 0,'d',0));
-        if ( key>=105 && key<=115) {
+        if (key>=105 && key<=115 && !DEMO_M) {
             int layer = key - 104;
             ui->layerSelector->selectButtonAt(layer-1);
-        } else if ( key>=117 && key<=120) {
+        } else if (key>=117 && key<=120 && !DEMO_M) {
             int layer = key - 105;
+            ui->layerSelector->selectButtonAt(layer-1);
+        }
+        if (key>=105 && key<=109 && DEMO_M) {
+            int layer = key - 104;
             ui->layerSelector->selectButtonAt(layer-1);
         } else if (key==121) {
             // frei lassen Layer 16 wird nicht benötigt

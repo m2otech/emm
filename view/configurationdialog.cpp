@@ -21,7 +21,7 @@
 #include "model/layerdata.h"
 #include "ui_configurationdialog.h"
 
-extern bool DEMO;
+extern bool DEMO, DEMO_M;
 
 ConfigurationDialog::ConfigurationDialog(QWidget *parent) :
     QDialog(parent),
@@ -72,6 +72,12 @@ ConfigurationDialog::ConfigurationDialog(QWidget *parent) :
         ui->verticalSpinBox->setEnabled(false);
         ui->horizontalSpinBox->setValue(7);
         ui->verticalSpinBox->setValue(7);
+    }
+    if (DEMO_M)
+    {
+        ui->layerSpinBox->setMaximum(5);
+        ui->horizontalSpinBox->setMaximum(10);
+        ui->verticalSpinBox->setMaximum(10);
     }
 }
 

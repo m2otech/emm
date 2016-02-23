@@ -30,7 +30,7 @@ class KeyboardController : public QObject
 public:
     static KeyboardController* getInstance();
     static void dropInstance();
-    void initializeKeyboardController();
+    int initializeKeyboardController();
     void closeKeyboardController();
     static void increasePlayerCount();
     static void reducePlayerCount();

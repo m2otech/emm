@@ -36,6 +36,7 @@
 
 bool DEMO = false;
 bool DEMO_M = true;
+bool DEMO_MT = false;
 
 bool isRunningTwice(const QString &process) {
   // Use Windows tasklist cmd to check if process running
@@ -105,7 +106,7 @@ int main(int argc, char *argv[])
     }
 
     // DEMO Keyboard disabled
-    if (!DEMO)
+    if (!DEMO && !DEMO_MT)
     {
         s->showMessage("Verbindung zur Tastatur herstellen...");
         KeyboardController *keyController = KeyboardController::getInstance();

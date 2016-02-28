@@ -22,11 +22,11 @@
         <file>icons/add.png</file>
         <file>icons/delete.png</file>
         <file>icons/pencil.png</file>
-        <file>icons/splash.png</file>
         <file>icons/timeline_marker.png</file>
         <file>icons/flag_2.png</file>
         <file>icons/mixer.png</file>
         <file>icons/control_pause_blue.png</file>
         <file>icons/logo-full.png</file>
+        <file>icons/splash.png</file>
     </qresource>
 </RCC>

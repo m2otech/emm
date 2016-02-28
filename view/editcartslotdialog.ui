@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>412</width>
+    <width>442</width>
     <height>511</height>
    </rect>
   </property>
@@ -195,21 +195,21 @@
           <item>
            <widget class="QCheckBox" name="fadeOthersCheckBox">
             <property name="text">
-             <string>Bei Start andere Player ausblenden</string>
+             <string>Bei Start andere Slots ausblenden</string>
             </property>
            </widget>
           </item>
           <item>
            <widget class="QCheckBox" name="letFadeCheckBox">
             <property name="text">
-             <string>Von anderen Playern ausblenden lassen</string>
+             <string>Von anderen Slots ausblenden lassen</string>
             </property>
            </widget>
           </item>
           <item>
            <widget class="QCheckBox" name="disablePause">
             <property name="text">
-             <string>Pause für diesen Player deaktivieren</string>
+             <string>Pause für diesen Slot deaktivieren</string>
             </property>
            </widget>
           </item>
@@ -700,7 +700,7 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>368</width>
+            <width>98</width>
             <height>181</height>
            </rect>
           </property>

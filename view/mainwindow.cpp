@@ -48,7 +48,7 @@
 
 #include <QMutex>
 
-extern bool DEMO, DEMO_M;
+extern bool DEMO, DEMO_M, DEMO_MT;
 
 MainWindow* MainWindow::instance = 0;
 
@@ -115,6 +115,8 @@ void MainWindow::init() {
     connect(ui->pauseAllButton, SIGNAL(clicked()), this, SLOT(pauseSlots()));
     connect(ui->stopAllButton, SIGNAL(clicked()), this, SLOT(stopSlots()));
 
+    QString windowTitle = "EventMusicSoftware";
+
     // DEMO Hide Pause All und Stop All buttons, disable Menu items
     if (DEMO)
     {
@@ -123,12 +125,18 @@ void MainWindow::init() {
         ui->resetCountersAction->setEnabled(false);
         ui->colorAction->setEnabled(false);
         ui->setConfigurationAction->setEnabled(false);
+        windowTitle += " (Demo)";
     }
     else if (DEMO_M)
     {
         ui->setConfigurationAction->setVisible(false);
         ui->colorAction->setVisible(false);
+        if (DEMO_MT)
+            windowTitle += " (Demo MT)";
+        else
+            windowTitle += " (Demo M)";
     }
+    instance->setWindowTitle(windowTitle);
 
     // m2: Slot-Store popup
     ssdGlobal = new SlotStoreDialog(this);

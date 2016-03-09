@@ -36,7 +36,7 @@
 
 bool DEMO = false;
 bool DEMO_M = true;
-bool DEMO_MT = false;
+bool DEMO_MT = true;
 
 bool isRunningTwice(const QString &process) {
   // Use Windows tasklist cmd to check if process running
@@ -73,7 +73,7 @@ int main(int argc, char *argv[])
     s->showMessage("EventMusicSoftware starten...");
 
     // DEMO Store config in current directory
-    if (DEMO)
+    if (DEMO || DEMO_M)
         Configuration::setStorageLocation(QDir::currentPath());
 
     QString path = Configuration::getStorageLocation();

@@ -76,8 +76,8 @@ ConfigurationDialog::ConfigurationDialog(QWidget *parent) :
     if (DEMO_M)
     {
         ui->layerSpinBox->setMaximum(5);
-        ui->horizontalSpinBox->setMaximum(10);
-        ui->verticalSpinBox->setMaximum(10);
+        ui->horizontalSpinBox->setMaximum(13);
+        ui->verticalSpinBox->setMaximum(8);
     }
 }
 

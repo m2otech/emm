@@ -232,13 +232,13 @@ void Configuration::readData()
         verticalSlots = settings.value("Slots/Vertical",5).toInt();
     }
 
-    // DEMO_M max 10x10 slots
+    // DEMO_M max 13x8 slots
     if (DEMO_M)
     {
-        if (horizontalSlots > 10)
-            horizontalSlots = 10;
-        if (verticalSlots > 10)
-            verticalSlots = 10;
+        if (horizontalSlots > 13)
+            horizontalSlots = 13;
+        if (verticalSlots > 8)
+            verticalSlots = 8;
     }
 
     // DEMO (1 layer only)    

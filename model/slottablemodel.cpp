@@ -22,7 +22,7 @@
 #include "model/audio/cartslot.h"
 #include "slottablemodel.h"
 
-extern bool DEMO, DEMO_M;
+extern bool DEMO, DEMO_M, DEMO_MT;
 
 SlotTableModel::SlotTableModel(QObject *parent) :
     QAbstractTableModel(parent)
@@ -138,7 +138,8 @@ void SlotTableModel::loadData()
         if (DEMO && i >= 60)
             break;
         // DEMO_M (max 750 entries)
-        if (DEMO_M && i >= 750)
+        // DEMO_MT umlimited
+        if (( DEMO_M && !DEMO_MT ) && i >= 750)
             break;
     }
     slot = slotList;

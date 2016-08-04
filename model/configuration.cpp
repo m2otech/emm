@@ -247,6 +247,10 @@ void Configuration::readData()
     else
         layer = settings.value("Slots/Layer",1).toInt();
 
+    // DEMO_MT 15 layers
+    if (DEMO_M && layer > 15)
+        layer = 15;
+
     // DEMO_M 5 layers
     if (DEMO_M && layer > 5)
         layer = 5;

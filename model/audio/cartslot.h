@@ -57,6 +57,9 @@ public:
     // m2: new checkbox disable pause
     bool getPauseDisabled();
 
+    // m2: get layer the slot belongs to (1-based)
+    int getLayer();
+
 private:
     CartSlot(int number, QObject *parent = 0, bool db=false);
     QString text1;

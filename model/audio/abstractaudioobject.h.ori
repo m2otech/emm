@@ -1,18 +1,18 @@
 ﻿/* ***************************************************************************
- * This file is part of Event Music Machine.
+ * This file is part of EventMusicSoftware.
  *
- * Event Music Machine is free software: you can redistribute it and/or modify
+ * EventMusicSoftware is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * Event Music Machine is distributed in the hope that it will be useful,
+ * EventMusicSoftware is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with Event Music Machine. If not, see <http://www.gnu.org/licenses/>.
+ * along with EventMusicSoftware. If not, see <http://www.gnu.org/licenses/>.
  * ************************************************************************* */
 
 #ifndef ABSTRACTAUDIOOBJECT_H
@@ -39,12 +39,9 @@ public:
     bool isPlaying();
     bool isPaused();
     void fadeOut(int ms);
-    void fadeOut(int ms, int slotNo);
     void fadeOutPause(int ms);
     bool isMissing();
     double getTimeLeft();
-    // m2: redeclared as slot to call it asynchronously
-    //void pause();
     virtual void loadStream(double vol=0);
 
 protected:
@@ -70,9 +67,6 @@ protected:
     void initDevice();
     static double DBToLevel(double db);
 
-private:
-    int currSlotNo;
-
 signals:
     void sendSongLength(double length);
     void sendCurrentPosition(double pos);
@@ -84,7 +78,6 @@ signals:
 public slots:
     virtual void play();
     virtual void stop();
-    virtual void stop(int);
     // m2: redeclared as slot to call it asynchronously
     void pause();
 
@@ -92,7 +85,6 @@ protected slots:
     virtual void readData()=0;
     virtual void saveData()=0;
     virtual void updatePosition();
-    virtual void updatePosition(int, int);
 
 };
 

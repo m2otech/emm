@@ -27,6 +27,8 @@
 #include "model/configuration.h"
 #include "playlistplayer.h"
 
+#include "view/mainwindow.h"
+
 QMap<int,CartSlot*> CartSlot::audioObjects = QMap<int,CartSlot*>();
 
 CartSlot::CartSlot(int number, QObject *parent, bool db) :
@@ -63,6 +65,9 @@ void CartSlot::play()
         this->cartStop();
     else
     {
+        // m2: add to RLA
+        MainWindow::getInstance()->infoBoxAddToQueue(this->getNumber());
+
         this->loadStream(db);
         if (this->loop)
             BASS_ChannelFlags(stream, BASS_SAMPLE_LOOP, BASS_SAMPLE_LOOP);
@@ -384,7 +389,7 @@ void CartSlot::updatePosition()
         emit sendCurrentPosition(BASS_ChannelBytes2Seconds(stream,BASS_ChannelGetPosition(stream,BASS_POS_BYTE)));
         if (this->loop)
             return;
-        AbstractAudioObject::updatePosition();
+        AbstractAudioObject::updatePosition(this->getNumber(), this->getLayer());
     }
 }
 
@@ -480,4 +485,11 @@ int CartSlot::isUsed(QString filename)
         }
     }
     return -1;
+}
+
+int CartSlot::getLayer()
+{
+    int slotsPerLayer = Configuration::getInstance()->getVerticalSlots() * Configuration::getInstance()->getHorizontalSlots();
+
+    return (int)(this->getNumber() / slotsPerLayer) + 1;
 }

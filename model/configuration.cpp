@@ -24,7 +24,7 @@
 
 #include "view/mainwindow.h"
 
-extern bool DEMO, DEMO_M;
+extern bool DEMO, DEMO_M, DEMO_MT;
 
 Configuration* Configuration::instance = 0;
 
@@ -247,13 +247,18 @@ void Configuration::readData()
     else
         layer = settings.value("Slots/Layer",1).toInt();
 
-    // DEMO_MT 15 layers
-    if (DEMO_M && layer > 15)
-        layer = 15;
-
     // DEMO_M 5 layers
-    if (DEMO_M && layer > 5)
-        layer = 5;
+    if (DEMO_M) {
+        // DEMO_MT 15 layers
+        if (DEMO_MT) {
+            if (layer > 15)
+                layer = 15;
+        }
+        else {
+            if (layer > 5)
+                layer = 5;
+        }
+    }
 
     layers.clear();
     for (int i=0;i<layer;i++) {

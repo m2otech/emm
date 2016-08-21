@@ -66,6 +66,17 @@ public:
     // m2: layer that was shown before changing to layer 1 via keyboard
     int prevLayer;
 
+    // m2: set text to box right of layer bar
+    void setInfoBox(QString);
+
+    // m2: methods for RLA
+    void updateCurrSongPosition(double, int);
+    void infoBoxAddToQueue(int);
+    void infoBoxRemoveFromQueue(int);
+    int infoBoxGetLast();
+
+    bool isSlotShown(int);
+
 protected:
     void wheelEvent(QWheelEvent *);
 
@@ -80,6 +91,9 @@ private:
     static MainWindow* instance;
 
     SlotStoreDialog* ssdGlobal;
+
+    // m2: managing RLA
+    QList<int> infoBoxQueue;
 
 private slots:
     void showConfigDialog();

@@ -1,18 +1,18 @@
 ﻿/* ***************************************************************************
- * This file is part of Event Music Machine.
+ * This file is part of EventMusicSoftware.
  *
- * Event Music Machine is free software: you can redistribute it and/or modify
+ * EventMusicSoftware is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * Event Music Machine is distributed in the hope that it will be useful,
+ * EventMusicSoftware is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with Event Music Machine. If not, see <http://www.gnu.org/licenses/>.
+ * along with EventMusicSoftware. If not, see <http://www.gnu.org/licenses/>.
  * ************************************************************************* */
 
 #include <QTimer>
@@ -23,8 +23,6 @@
 #include "model/audio/bassasiodevice.h"
 #include "model/audio/bassdevice.h"
 #include "model/keyboardcontroller.h"
-
-#include "view/mainwindow.h"
 
 AbstractAudioObject::AbstractAudioObject(int, QObject *parent) : QObject(parent)
 {
@@ -130,24 +128,12 @@ void AbstractAudioObject::play()
 
 void AbstractAudioObject::stop()
 {
-    this->stop(currSlotNo);
-}
-
-void AbstractAudioObject::stop(int slotNo)
-{
     if (!playing)
         return;
     KeyboardController::reducePlayerCount();
     BASS_ChannelStop(stream);
     BASS_Mixer_ChannelFlags(stream, BASS_MIXER_PAUSE, BASS_MIXER_PAUSE);
     playing = false;
-
-    // m2: set pos to 0 every time / if slot still running will be overwritten
-    if (slotNo > 0) {
-        MainWindow::getInstance()->infoBoxRemoveFromQueue(slotNo);
-    }
-    MainWindow::getInstance()->updateCurrSongPosition(0, 0);
-
     emit stopped();
     timer->stop();
     unloadStream();
@@ -157,7 +143,6 @@ void AbstractAudioObject::pause()
 {
     if (playing)
     {
-        //qDebug("Pause called");
         BASS_ChannelPause(stream);
         BASS_Mixer_ChannelFlags(stream, BASS_MIXER_PAUSE, BASS_MIXER_PAUSE);
         playing = false;
@@ -166,7 +151,6 @@ void AbstractAudioObject::pause()
     }
     else
     {
-        //qDebug("Pause (restart) called");
         BASS_Mixer_ChannelFlags(stream, 0, BASS_MIXER_PAUSE);
         BASS_ChannelSetAttribute(stream,BASS_ATTRIB_VOL,1);
         BASS_ChannelPlay(stream,false);
@@ -194,16 +178,8 @@ void AbstractAudioObject::unloadStream()
     BASS_StreamFree(stream);
 }
 
-// m2
 void AbstractAudioObject::fadeOut(int ms)
 {
-    this->fadeOut(ms, currSlotNo);
-}
-
-void AbstractAudioObject::fadeOut(int ms, int slotNo)
-{
-    currSlotNo = slotNo;
-
     BASS_ChannelSlideAttribute(stream, BASS_ATTRIB_VOL, -1, ms);
     QTimer *test = new QTimer(this);
     test->singleShot(ms,this,SLOT(stop()));
@@ -230,29 +206,12 @@ QString AbstractAudioObject::getFontColor()
 
 void AbstractAudioObject::updatePosition()
 {
-    this->updatePosition(0, 0);
-}
-
-void AbstractAudioObject::updatePosition(int slotNo, int layerNo)
-{
-    currSlotNo = slotNo;
-
     QWORD pos = BASS_ChannelGetPosition(stream,BASS_POS_BYTE);
     double pos2 = BASS_ChannelBytes2Seconds(stream,pos);
     emit sendCurrentPosition(pos2);
-    double remTime = this->getTimeLeft();
-
-    MainWindow *win = MainWindow::getInstance();
-
-    int slotInBox = win->infoBoxGetLast();
-
-    if (slotNo == slotInBox)
-        // m2: update position in main window (infoBox next to layer bar)
-        win->updateCurrSongPosition(remTime, layerNo);
-
     if (BASS_ChannelGetPosition(stream,BASS_POS_BYTE)==BASS_ChannelGetLength(stream,BASS_POS_BYTE))
     {
-        this->stop(slotNo);
+        this->stop();
         //return 0;
     }
 }

@@ -18,18 +18,25 @@
 #include <QToolBar>
 #include "tfselectionbar.h"
 
+extern bool DEMO, DEMO_M, DEMO_MT;
+
 TFSelectionBar::TFSelectionBar(QWidget *parent) :
     TFAbstractToolbar(parent)
 {
+    int height = 25;
+
+    if (DEMO_MT)
+        height = 50;
+
     toolbar->setAllowedAreas(Qt::TopToolBarArea);
     toolbar->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
     toolbar->setOrientation(Qt::Horizontal);
-    toolbar->setFixedHeight(25);
+    toolbar->setFixedHeight(height);
     toolbar->setIconSize(QSize(21,21));
 
-    setFixedHeight(25);
+    setFixedHeight(height);
 
-    setStyleSheet(" \
+    const QString ssheet = " \
             QWidget { \
                     background-color: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0, stop:0 rgba(57, 57, 57, 255), stop:1 rgba(180, 180, 180, 255)); \
                     border-bottom:1px solid rgba(57, 57, 57, 255); \
@@ -41,11 +48,11 @@ TFSelectionBar::TFSelectionBar(QWidget *parent) :
                     spacing:0; \
             } \
             QToolBar:top { \
-                    height:25px; \
+                    height:" + QString::number(height) + "px; \
                     background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(57, 57, 57, 255), stop:1 rgba(130, 130, 130, 255)); \
             } \
             QToolButton { \
-                    height:25px; \
+                    height:50px; \
                     border:0; \
                     padding-left:10px; \
                     padding-right:10px; \
@@ -65,5 +72,6 @@ TFSelectionBar::TFSelectionBar(QWidget *parent) :
             QToolButton:disabled { \
                 color:#cccccc; \
             } \
-    ");
+    ";
+    setStyleSheet(ssheet);
 }

@@ -126,15 +126,24 @@ void MainWindow::init() {
         ui->colorAction->setEnabled(false);
         ui->setConfigurationAction->setEnabled(false);
         windowTitle += " (Demo)";
+        // Hide RLA
+        ui->infoBox->setVisible(false);
     }
     else if (DEMO_M)
     {
         ui->setConfigurationAction->setVisible(false);
         ui->colorAction->setVisible(false);
-        if (DEMO_MT)
+        if (DEMO_MT) {
             windowTitle += " (Demo MT)";
-        else
+            // Hide Pause / Stop
+            ui->pauseAllButton->hide();
+            ui->stopAllButton->hide();
+        }
+        else {
             windowTitle += " (Demo M)";
+            // Hide RLA
+            ui->infoBox->setVisible(false);
+        }
     }
     instance->setWindowTitle(windowTitle);
 
@@ -559,4 +568,57 @@ void MainWindow::dropInstance()
     instance = 0;
     mutex.unlock();
 }
+
+void MainWindow::setInfoBox(QString text)
+{
+    ui->infoBox->setText(text);
+}
+
+// m2: updates the RLA (pos2 is the time left in song)
+void MainWindow::updateCurrSongPosition(double pos2, int layerNo)
+{
+    int mins2 = pos2/60;
+    int secs2 = floor(pos2-mins2*60);
+    int msecs2 = floor((pos2-mins2*60-secs2)*10);
+    QString time = QString("L%4 %1:%2.%3").arg(mins2, 2, 10, QChar('0')).arg(secs2,2,10, QChar('0')).arg(msecs2).arg(layerNo);//.arg(infoBoxQueue.size());
+    setInfoBox(time);
+    //qDebug("" + QString("%1").arg(infoBoxQueue));
+
+    if (infoBoxQueue.size() > 1)
+        ui->infoBox->setStyleSheet("QLabel { color : red; }");
+    else
+        ui->infoBox->setStyleSheet("QLabel { color : black; }");
+}
+
+// m2: add/remove/get info about song to be in the RLA
+void MainWindow::infoBoxAddToQueue(int slotNo)
+{
+    // add to array infoBoxQueue
+    infoBoxQueue.append(slotNo);
+    //qDebug() << QString("Added: %1").arg(slotNo);
+    //qDebug() << QString("Queue size: %1").arg(infoBoxQueue.size());
+}
+
+void MainWindow::infoBoxRemoveFromQueue(int slotNo)
+{
+    // remove from array infoBoxQueue
+    if ( !(infoBoxQueue.isEmpty()) && infoBoxQueue.contains(slotNo) ) {
+        //for (int i = 0; i < infoBoxQueue.size(); i++)
+            //qDebug() << QString("Queue[%1]: %2").arg(i).arg(infoBoxQueue.at(i));
+
+        infoBoxQueue.removeAll(slotNo);
+        //qDebug() << QString("Removed: %1").arg(slotNo);
+    }
+    //qDebug() << QString("Queue size: %1").arg(infoBoxQueue.size());
+}
+
+int MainWindow::infoBoxGetLast()
+{
+    // get last item added to the list
+    if ( !(infoBoxQueue.isEmpty()) )
+        return infoBoxQueue.last();
+    else
+        return -1;
+}
+
 

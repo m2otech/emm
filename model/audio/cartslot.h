@@ -32,6 +32,8 @@ public:
     double getStartPos();
     double getStopPos();
     int getPitch();
+    // m2: set pitch
+    void setPitch(int);
     int getFontSize();
     double getDB();
     int getNumber();

@@ -118,6 +118,11 @@ void MainWindow::init() {
     connect(ui->pauseAllButton, SIGNAL(clicked()), this, SLOT(pauseSlots()));
     connect(ui->stopAllButton, SIGNAL(clicked()), this, SLOT(stopSlots()));
 
+    // m2: Pitch buttons
+    connect(ui->pitchDownButton, SIGNAL(clicked()), this, SLOT(pitchDown()));
+    connect(ui->pitchUpButton, SIGNAL(clicked()), this, SLOT(pitchUp()));
+    connect(ui->pitchResetButton, SIGNAL(clicked()), this, SLOT(pitchReset()));
+
     connect(ui->switchToPlayer, SIGNAL(clicked()), this, SLOT(showPlayer()));
     connect(ui->switchToSlots, SIGNAL(clicked()), this, SLOT(showSlots()));
 
@@ -252,6 +257,12 @@ void MainWindow::keyboardSignal(int key, int pressed)
             CartSlot::fadeOutAllSlots(NULL,true);
             PlaylistPlayer::fadeOutAllPlayers();
             PFLPlayer::getInstance()->stopCue();
+        } else if (key==102) {
+            this->pitchUp();
+        } else if (key==103) {
+            this->pitchDown();
+        } else if (key==104) {
+            this->pitchReset();
         } else if (key<=(conf->getHorizontalSlots()*conf->getVerticalSlots())) {
             int key2 = key;
             CartSlot *slot = AudioProcessor::getInstance()->getCartSlotWithNumber(key2);
@@ -348,6 +359,55 @@ void MainWindow::stopSlots()
 
     // Clear RLA queue on stop all (normally redundant)
     //this->infoBoxQueue.clear();
+}
+
+// m2: increase pitch by 1%
+void MainWindow::pitchUp()
+{
+    this->pitchChange(1);
+}
+
+// m2: decrease pitch by 1%
+void MainWindow::pitchDown()
+{
+    this->pitchChange(-1);
+}
+
+// m2: reset pitch to 0%
+void MainWindow::pitchReset()
+{
+    this->pitchChange(0);
+}
+
+// m2: change = 0 => set pitch to 0
+//     change <> 0 => set pitch to current pitch +- change
+void MainWindow::pitchChange(int change)
+{
+    MainWindow* currInstance = this->getInstance();
+
+    // Running slot(s)
+    int noOfSongs = currInstance->numberOfSlots;
+
+    // Find slot which is currently playing
+    CartSlot *slot = NULL;
+    for (int i = 0; i < noOfSongs; i++) {
+        slot = AudioProcessor::getInstance()->getCartSlotWithNumber(i);
+        if (slot->isPlaying()) {
+            int newPitch;
+            if (change == 0)
+                newPitch = 0;
+            else
+                newPitch = slot->getPitch() + change;
+            slot->setPitch(newPitch);
+            pitchDisplayUpdate(slot->getPitch());
+        }
+    }
+}
+
+void MainWindow::pitchDisplayUpdate(int pitch)
+{
+    QString currPitch = QString("%1 \%").arg(pitch);
+    ui->pitchResetButton->setText(currPitch);
 }
 
 void MainWindow::wheelEvent(QWheelEvent *e)

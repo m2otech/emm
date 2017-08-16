@@ -75,6 +75,9 @@ public:
     void infoBoxRemoveFromQueue(int);
     int infoBoxGetLast();
 
+    // m2: change pitch display when starting slot
+    void pitchDisplayUpdate(int);
+
     bool isSlotShown(int);
 
 protected:
@@ -113,6 +116,11 @@ private slots:
     // m2: pause/stop running slots
     void pauseSlots();
     void stopSlots();
+    // m2: pitch change while playing
+    void pitchUp();
+    void pitchDown();
+    void pitchReset();
+    void pitchChange(int);
     int getLayerFirstSlotId();
     int getLayerNumberOfSlots();
     int getCurrentLayer();

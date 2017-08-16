@@ -75,6 +75,8 @@ void CartSlot::play()
         else
             BASS_ChannelFlags(stream, 0, BASS_SAMPLE_LOOP);
         BASS_ChannelSetAttribute(stream, BASS_ATTRIB_TEMPO, this->pitch);
+        // m2: update pitch display to current value
+        MainWindow::getInstance()->pitchDisplayUpdate(this->pitch);
         AbstractAudioObject::play();
         if (this->startPos>0)
             BASS_ChannelSetPosition(stream,BASS_ChannelSeconds2Bytes(stream,startPos),BASS_POS_BYTE);
@@ -161,6 +163,12 @@ double CartSlot::getStopPos()
 int CartSlot::getPitch()
 {
     return this->pitch;
+}
+
+void CartSlot::setPitch(int pitch)
+{
+    this->pitch = pitch;
+    BASS_ChannelSetAttribute(stream, BASS_ATTRIB_TEMPO, this->pitch);
 }
 
 int CartSlot::getFontSize()

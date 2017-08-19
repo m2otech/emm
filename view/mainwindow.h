@@ -121,6 +121,8 @@ private slots:
     void pitchDown();
     void pitchReset();
     void pitchChange(int);
+    void resetPitches();
+    void resetPitches(bool);
     int getLayerFirstSlotId();
     int getLayerNumberOfSlots();
     int getCurrentLayer();

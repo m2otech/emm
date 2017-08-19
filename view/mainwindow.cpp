@@ -122,6 +122,7 @@ void MainWindow::init() {
     connect(ui->pitchDownButton, SIGNAL(clicked()), this, SLOT(pitchDown()));
     connect(ui->pitchUpButton, SIGNAL(clicked()), this, SLOT(pitchUp()));
     connect(ui->pitchResetButton, SIGNAL(clicked()), this, SLOT(pitchReset()));
+    connect(ui->resetPitchesAction, SIGNAL(triggered()), this, SLOT(resetPitches()));
 
     connect(ui->switchToPlayer, SIGNAL(clicked()), this, SLOT(showPlayer()));
     connect(ui->switchToSlots, SIGNAL(clicked()), this, SLOT(showSlots()));
@@ -257,6 +258,8 @@ void MainWindow::keyboardSignal(int key, int pressed)
             CartSlot::fadeOutAllSlots(NULL,true);
             PlaylistPlayer::fadeOutAllPlayers();
             PFLPlayer::getInstance()->stopCue();
+        } else if (key==101) {
+            this->resetPitches(false);
         } else if (key==102) {
             this->pitchUp();
         } else if (key==103) {
@@ -373,13 +376,13 @@ void MainWindow::pitchDown()
     this->pitchChange(-1);
 }
 
-// m2: reset pitch to 0%
+// m2: reset pitch to slot default (value set in slot edit dialog and stored on disk)
 void MainWindow::pitchReset()
 {
     this->pitchChange(0);
 }
 
-// m2: change = 0 => set pitch to 0
+// m2: change = 0 => set pitch to default value (stored in slot)
 //     change <> 0 => set pitch to current pitch +- change
 void MainWindow::pitchChange(int change)
 {
@@ -393,13 +396,43 @@ void MainWindow::pitchChange(int change)
     for (int i = 0; i < noOfSongs; i++) {
         slot = AudioProcessor::getInstance()->getCartSlotWithNumber(i);
         if (slot->isPlaying()) {
-            int newPitch;
-            if (change == 0)
-                newPitch = 0;
-            else
-                newPitch = slot->getPitch() + change;
-            slot->setPitch(newPitch);
+            if (change == 0) {
+                // reload value from disk
+                slot->loadFromSlot(i);
+            }
+            else {
+                int newPitch = slot->getPitch() + change;
+                slot->setPitch(newPitch);
+            }
             pitchDisplayUpdate(slot->getPitch());
+        }
+    }
+}
+
+// m2: reset all pitches in current layer
+void MainWindow::resetPitches() {
+    this->resetPitches(true);
+}
+
+void MainWindow::resetPitches(bool confirmDialog) {
+
+    bool confirmed = false;
+    if (confirmDialog) {
+        QMessageBox::StandardButton reply;
+        reply = QMessageBox::question(this, QString::fromUtf8("Pitch Zurücksetzen"), "Soll bei allen Slots im aktuellen Layer der Pitch zurückgesetzt werden?", QMessageBox::Yes|QMessageBox::No);
+        if (reply == QMessageBox::Yes)
+            confirmed = true;
+    }
+
+    if ( confirmed || !confirmDialog ) {
+        // Find slot which is currently playing
+        CartSlot *slot = NULL;
+        for (int i = getLayerFirstSlotId(); i < getLayerFirstSlotId() + getLayerNumberOfSlots(); i++) {
+            slot = AudioProcessor::getInstance()->getCartSlotWithNumber(i);
+            // reload value from disk
+            slot->loadFromSlot(i);
+            if (slot->isPlaying())
+                pitchDisplayUpdate(slot->getPitch());
         }
     }
 }

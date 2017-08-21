@@ -41,6 +41,7 @@ class SlotStoreDialog : public QDialog
 public:
     explicit SlotStoreDialog(QWidget *parent = 0);
     ~SlotStoreDialog();
+    void addSlotAuto(QString);
 
 private:
     Ui::SlotStoreDialog *ui;
@@ -49,7 +50,7 @@ private:
     PFLPlayer* player;
 
     QString title;
-    void addSlotAuto(QString);
+    //void addSlotAuto(QString);
 
 private slots:
     void addSlot();

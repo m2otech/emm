@@ -19,6 +19,9 @@
 #include <QFile>
 #include <QMessageBox>
 #include <QSortFilterProxyModel>
+#include <QProgressDialog>
+#include <QList>
+#include <QUrl>
 #include "editcartslotdialog.h"
 #include "model/slottablemodel.h"
 #include "slotstoredialog.h"
@@ -29,6 +32,10 @@
 #include "model/audio/bassdevice.h"
 #include "model/audio/cartslot.h"
 #include "model/audio/pflplayer.h"
+
+#include "model/slotstoreimportthread.h"
+
+#include "mainwindow.h"
 
 SlotStoreDialog::SlotStoreDialog(QWidget *parent) :
     QDialog(parent),
@@ -166,25 +173,33 @@ void SlotStoreDialog::dragEnterEvent(QDragEnterEvent *e)
 // m2: drag & drop files
 void SlotStoreDialog::dropEvent(QDropEvent *e)
 {
-    // TODO do it in a parallel thread with progress bar and possibility to stop
-    //ClearLayerThread *clear = new ClearLayerThread(ui->layerSelector->getSelectedButton());
-    //QProgressDialog *dia = new QProgressDialog(this);
-    //dia->setCancelButton(NULL);
-    //dia->setLabelText(tr("Layer löschen...."));
-    //dia->setWindowFlags(Qt::Tool | Qt::WindowTitleHint | Qt::CustomizeWindowHint);
-    //connect(clear,SIGNAL(updateStatus(int)), dia, SLOT(setValue(int)));
-    //connect(clear,SIGNAL(updateMax(int)), dia, SLOT(setMaximum(int)));
-    //connect(dia,SIGNAL(canceled()), clear, SLOT(quit()));
-    //clear->start();
-    //dia->exec();
+    // Load new files in a parallel thread with progress bar
+    // TODO Add possibility to stop
 
+    QList<QUrl> urls = e->mimeData()->urls();
+
+    SlotStoreImportThread *clear = new SlotStoreImportThread(urls);
+    QProgressDialog *dia = new QProgressDialog(this);
+    dia->setCancelButton(NULL);
+    dia->setLabelText(tr("Slots importieren...."));
+    dia->setWindowFlags(Qt::Tool | Qt::WindowTitleHint | Qt::CustomizeWindowHint);
+    connect(clear,SIGNAL(updateStatus(int)), dia, SLOT(setValue(int)));
+    connect(clear,SIGNAL(updateMax(int)), dia, SLOT(setMaximum(int)));
+    connect(dia,SIGNAL(canceled()), clear, SLOT(quit()));
+    clear->start();
+    dia->exec();
+
+    // Reload data
+    model->loadData();
+
+    // MOVED TO PARALLEL THREAD
     // Add slots from dragged&dropped files
-    foreach (const QUrl &url, e->mimeData()->urls()) {
-        QString fileName = url.toLocalFile();
-        //qDebug() << "Dropped file:" << fileName;
-        if (fileName.contains("."))
-            this->addSlotAuto(fileName);
-    }
+    //foreach (const QUrl &url, e->mimeData()->urls()) {
+    //    QString fileName = url.toLocalFile();
+    //    //qDebug() << "Dropped file:" << fileName;
+    //    if (fileName.contains("."))
+    //        this->addSlotAuto(fileName);
+    //}
 }
 
 void SlotStoreDialog::addSlotAuto(QString filename)

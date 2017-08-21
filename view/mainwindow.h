@@ -80,6 +80,8 @@ public:
 
     bool isSlotShown(int);
 
+    SlotStoreDialog* ssdGlobalThread;
+
 protected:
     void wheelEvent(QWheelEvent *);
 

@@ -79,7 +79,10 @@ SOURCES += main.cpp\
     model/copycolorsthread.cpp \
     model/clearlayerthread.cpp \
     model/layerdata.cpp \
-    view/slottablewidget.cpp
+    view/slottablewidget.cpp \
+    model/resetpitchesthread.cpp \
+    model/slotstoreimportthread.cpp
+
 
 HEADERS += view/mainwindow.h \
     view/configurationdialog.h \
@@ -120,7 +123,10 @@ HEADERS += view/mainwindow.h \
     model/copycolorsthread.h \
     model/clearlayerthread.h \
     model/layerdata.h \
-    view/slottablewidget.h
+    view/slottablewidget.h \
+    model/resetpitchesthread.h \
+    model/slotstoreimportthread.h
+
 
 FORMS += view/mainwindow.ui \
     view/configurationdialog.ui \

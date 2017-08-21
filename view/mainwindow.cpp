@@ -37,6 +37,7 @@
 #include "model/audio/playlistplayer.h"
 #include "model/audio/pluginloader.h"
 #include "model/clearlayerthread.h"
+#include "model/resetpitchesthread.h"
 #include "model/configuration.h"
 #include "model/copycolorsthread.h"
 #include "model/globaldata.h"
@@ -57,6 +58,8 @@ MainWindow* MainWindow::instance = 0;
 
 // "Global" Store-Dialog (to be shown/hidden via keyboard)
 SlotStoreDialog* ssdGlobal = NULL;
+// "Global" Store-Dialog (to be used in parallel thread)
+SlotStoreDialog* ssdGlobalThread = NULL;
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow) {
     this->pauseModifier = false;
@@ -129,6 +132,7 @@ void MainWindow::init() {
 
     // m2: Slot-Store popup
     ssdGlobal = new SlotStoreDialog(this);
+    ssdGlobalThread = new SlotStoreDialog(this);
 
     // m2: Set "crossed arrows" always on and disable it to avoid bug #21
     ui->autoPlayCheckBox->setChecked(true);
@@ -193,7 +197,7 @@ void MainWindow::showBassErrorMessage(int code)
     switch (code)
     {
     case 3: message = tr("Der Treiber ist nicht verfügbar. Eventuell wird das Audiogerät schon benutzt."); break;
-    case 8: message = tr("Ein Ausgabekanal konnte nicht angewählt werden, weil er nicht initialisert wurde. Entweder ist die entsprechende Soundkarte nicht angeschlossen oder die entsprechenden Funktionen (z.B. ASIO-Gerät) sind in ihrem Programm nicht aktiviert."); break;
+    case 8: message = tr("Ein Ausgabekanal konnte nicht angewählt werden, weil er nicht initialisiert wurde. Entweder ist die entsprechende Soundkarte nicht angeschlossen oder die entsprechenden Funktionen (z.B. ASIO-Gerät) sind in ihrem Programm nicht aktiviert."); break;
     case 23: message = tr("Das ausgewählte Audiogerät ist nicht vorhanden."); break;
     default: message = QString::number(code);
     }
@@ -259,7 +263,7 @@ void MainWindow::keyboardSignal(int key, int pressed)
             PlaylistPlayer::fadeOutAllPlayers();
             PFLPlayer::getInstance()->stopCue();
         } else if (key==101) {
-            this->resetPitches(false);
+            this->resetPitches(true);
         } else if (key==102) {
             this->pitchUp();
         } else if (key==103) {
@@ -395,13 +399,17 @@ void MainWindow::pitchChange(int change)
     CartSlot *slot = NULL;
     for (int i = 0; i < noOfSongs; i++) {
         slot = AudioProcessor::getInstance()->getCartSlotWithNumber(i);
+        int newPitch;
         if (slot->isPlaying()) {
             if (change == 0) {
                 // reload value from disk
                 slot->loadFromSlot(i);
+                newPitch = slot->getPitch();
+                // set it explicitly to apply immediately
+                slot->setPitch(newPitch);
             }
             else {
-                int newPitch = slot->getPitch() + change;
+                newPitch = slot->getPitch() + change;
                 slot->setPitch(newPitch);
             }
             pitchDisplayUpdate(slot->getPitch());
@@ -425,15 +433,28 @@ void MainWindow::resetPitches(bool confirmDialog) {
     }
 
     if ( confirmed || !confirmDialog ) {
-        // Find slot which is currently playing
-        CartSlot *slot = NULL;
+
+        // Version with parallel thread (less-blocking)
+        ResetPitchesThread *clear = new ResetPitchesThread(ui->layerSelector->getSelectedButton());
+        QProgressDialog *dia = new QProgressDialog(this);
+        dia->setCancelButton(NULL);
+        dia->setLabelText(tr("Pitches zurücksetzen...."));
+        dia->setWindowFlags(Qt::Tool | Qt::WindowTitleHint | Qt::CustomizeWindowHint);
+        connect(clear,SIGNAL(updateStatus(int)), dia, SLOT(setValue(int)));
+        connect(clear,SIGNAL(updateMax(int)), dia, SLOT(setMaximum(int)));
+        connect(dia,SIGNAL(canceled()), clear, SLOT(quit()));
+        clear->start();
+        dia->exec();
+
+        // Version without parallel thread (blocking)
+        /*CartSlot *slot = NULL;
         for (int i = getLayerFirstSlotId(); i < getLayerFirstSlotId() + getLayerNumberOfSlots(); i++) {
             slot = AudioProcessor::getInstance()->getCartSlotWithNumber(i);
             // reload value from disk
             slot->loadFromSlot(i);
             if (slot->isPlaying())
                 pitchDisplayUpdate(slot->getPitch());
-        }
+        }*/
     }
 }
 
@@ -471,6 +492,9 @@ void MainWindow::showSlotStore()
 {
     SlotStoreDialog *ssd = new SlotStoreDialog(this);
     ssd->show();
+
+    //ssdGlobal = new SlotStoreDialog(this);
+    //ssdGlobal->show();
 }
 
 void MainWindow::copyColors() {

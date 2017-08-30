@@ -181,7 +181,7 @@ void SlotStoreDialog::dropEvent(QDropEvent *e)
     SlotStoreImportThread *clear = new SlotStoreImportThread(urls);
     QProgressDialog *dia = new QProgressDialog(this);
     dia->setCancelButton(NULL);
-    dia->setLabelText(tr("Slots importieren...."));
+    dia->setLabelText(tr("Dateien importieren...."));
     dia->setWindowFlags(Qt::Tool | Qt::WindowTitleHint | Qt::CustomizeWindowHint);
     connect(clear,SIGNAL(updateStatus(int)), dia, SLOT(setValue(int)));
     connect(clear,SIGNAL(updateMax(int)), dia, SLOT(setMaximum(int)));

@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Event Music Machine 2.4</string>
+   <string>Event Music Machine 2.5</string>
   </property>
   <property name="windowIcon">
    <iconset resource="icons.qrc">
@@ -146,6 +146,70 @@
               <width>22</width>
               <height>22</height>
              </size>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="pitchDownButton">
+            <property name="minimumSize">
+             <size>
+              <width>28</width>
+              <height>28</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>28</width>
+              <height>28</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>-1</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="pitchResetButton">
+            <property name="minimumSize">
+             <size>
+              <width>56</width>
+              <height>28</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>56</width>
+              <height>28</height>
+             </size>
+            </property>
+            <property name="font">
+             <font>
+              <pointsize>10</pointsize>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="text">
+             <string>0 %</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="pitchUpButton">
+            <property name="minimumSize">
+             <size>
+              <width>28</width>
+              <height>28</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>28</width>
+              <height>28</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>+1</string>
             </property>
            </widget>
           </item>
@@ -692,6 +756,7 @@ font-weight:bold;</string>
     <addaction name="colorAction"/>
     <addaction name="clearLayerAction"/>
     <addaction name="resetCountersAction"/>
+    <addaction name="resetPitchesAction"/>
    </widget>
    <addaction name="fileMenu"/>
    <addaction name="menuDiverses"/>
@@ -767,6 +832,11 @@ font-weight:bold;</string>
   <action name="resetCountersAction">
    <property name="text">
     <string>Alle Slot-Zähler in diesem Layer zurücksetzen</string>
+   </property>
+  </action>
+  <action name="resetPitchesAction">
+   <property name="text">
+    <string>Pitch bei allen Slots in diesem Layer zurücksetzen</string>
    </property>
   </action>
  </widget>

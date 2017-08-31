@@ -99,7 +99,9 @@ EditCartSlotDialog::EditCartSlotDialog(int slotNumber,bool db, QWidget *parent) 
     connect(ui->setStopPointButton, SIGNAL(clicked()), this, SLOT(setCurrentPosAsStopPos()));
     connect(ui->swapColorsButton, SIGNAL(clicked()), this, SLOT(swapColors()));
 
-
+    // m2: On opening dialog place cursor in Title field
+    ui->line1Text->setFocus();
+    ui->line1Text->setCursorPosition(ui->line1Text->text().length());
 }
 
 EditCartSlotDialog::~EditCartSlotDialog()

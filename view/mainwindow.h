@@ -107,7 +107,7 @@ private slots:
     void showErrorMessage(QString);
     void showBassErrorMessage(int code);
     void createPlayers();
-    void updateSlotAssignment();
+    //void updateSlotAssignment();
     void keyboardSignal(int key, int pressed);
     void setAutoPlay();
     void showAbout();
@@ -139,6 +139,8 @@ private slots:
     void showPlayer();
     void showSlots();
 
+public slots:
+    void updateSlotAssignment();
 };
 
 #endif // MAINWINDOW_H

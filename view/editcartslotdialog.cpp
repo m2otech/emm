@@ -35,6 +35,7 @@
 
 // m2:
 #include "model/configuration.h"
+#include "view/mainwindow.h"
 
 EditCartSlotDialog::EditCartSlotDialog(int slotNumber,bool db, QWidget *parent) :
         QDialog(parent),
@@ -114,6 +115,7 @@ void EditCartSlotDialog::save()
     player->stop();
     setData();
     done(1);
+    MainWindow::getInstance()->updateSlotAssignment();
 }
 
 void EditCartSlotDialog::loadData(CartSlot *slot, bool db)

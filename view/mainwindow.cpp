@@ -262,13 +262,13 @@ void MainWindow::keyboardSignal(int key, int pressed)
             CartSlot::fadeOutAllSlots(NULL,true);
             PlaylistPlayer::fadeOutAllPlayers();
             PFLPlayer::getInstance()->stopCue();
-        } else if (key==101) {
+        } else if ( key==101 && conf->getPitchKeyboard() ) {
             this->resetPitches(true);
-        } else if (key==102) {
+        } else if ( key==102 && conf->getPitchKeyboard() ) {
             this->pitchUp();
-        } else if (key==103) {
+        } else if ( key==103 && conf->getPitchKeyboard() ) {
             this->pitchDown();
-        } else if (key==104) {
+        } else if ( key==104 && conf->getPitchKeyboard() ) {
             this->pitchReset();
         } else if (key<=(conf->getHorizontalSlots()*conf->getVerticalSlots())) {
             int key2 = key;

@@ -103,6 +103,12 @@ bool Configuration::getLayerKeyboardSync()
     return this->layerKeyboardSync;
 }
 
+// m2
+bool Configuration::getPitchKeyboard()
+{
+    return this->pitchKeyboard;
+}
+
 bool Configuration::getPauseButton()
 {
     return this->pauseButton;
@@ -191,6 +197,12 @@ void Configuration::setLayerKeyboardSync(bool layerKeyboardSync)
     this->layerKeyboardSync = layerKeyboardSync;
 }
 
+// m2
+void Configuration::setPitchKeyboard(bool pitchKeyboard)
+{
+    this->pitchKeyboard = pitchKeyboard;
+}
+
 void Configuration::setPauseButton(bool pauseButton)
 {
     this->pauseButton = pauseButton;
@@ -220,6 +232,7 @@ void Configuration::readData()
     layerKeyboardSync = settings.value("Slots/LayerKeyboardSync",false).toBool();
     pauseButton = settings.value("Slots/PauseButton",false).toBool();
     slotTimeSize = settings.value("Slots/TimeSize",10).toInt();
+    pitchKeyboard = settings.value("Slots/PitchKeyboard",false).toBool();
 
     layers.clear();
     for (int i=0;i<layer;i++) {
@@ -250,6 +263,7 @@ void Configuration::saveData()
     settings.setValue("Slots/LayerKeyboardSync",layerKeyboardSync);
     settings.setValue("Slots/TimeSize",slotTimeSize);
     settings.setValue("Slots/PauseButton",pauseButton);
+    settings.setValue("Slots/PitchKeyboard",pitchKeyboard);
     BassDevice::setBuffer(slotBuffer);
     BassAsioDevice::setBuffer(slotBuffer);
 

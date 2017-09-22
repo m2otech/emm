@@ -49,6 +49,8 @@ ConfigurationDialog::ConfigurationDialog(QWidget *parent) :
         ui->keyboardSyncComboBox->setCurrentIndex(0);
     else
         ui->keyboardSyncComboBox->setCurrentIndex(1);
+    // m2: pitch via keyboard checkbox
+    ui->keyboardPitchCheckBox->setChecked(config->getPitchKeyboard());
     ui->playlistFadePosSpinBox->setValue(config->getPlaylistFPos());
     ui->layerSpinBox->setValue(config->getLayer());
     ui->deviceSelectWidget->setNewTitel(tr("PFL"));
@@ -97,6 +99,7 @@ void ConfigurationDialog::saveAndClose()
     config->setSlotFade(ui->slotFadeSpinBox->value());
     //config->setLayerKeyboardSync(ui->keyboardSyncCheckBox->isChecked());
     config->setLayerKeyboardSync(ui->keyboardSyncComboBox->currentIndex() == 0);
+    config->setPitchKeyboard(ui->keyboardPitchCheckBox->isChecked());
     config->setPlaylistFPos(ui->playlistFadePosSpinBox->value());
     config->setLayer(ui->layerSpinBox->value());
     config->setPFLDevice(ui->deviceSelectWidget->getDevice());

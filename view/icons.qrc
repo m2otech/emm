@@ -27,5 +27,6 @@
         <file>icons/flag_2.png</file>
         <file>icons/mixer.png</file>
         <file>icons/control_pause_blue.png</file>
+        <file>icons/warning.png</file>
     </qresource>
 </RCC>

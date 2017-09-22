@@ -42,6 +42,7 @@ public:
     int getLayer();
     int getSlotBuffer();
     bool getLayerKeyboardSync();
+    bool getPitchKeyboard();
     bool getPauseButton();
     int getSlotTimeSize();
     QMap<int, LayerData*> getLayers();
@@ -60,6 +61,7 @@ public:
     void setLayer(int layer);
     void setSlotBuffer(int slotBuffer);
     void setLayerKeyboardSync(bool layerKeyboardSync);
+    void setPitchKeyboard(bool);
     void setPauseButton(bool pauseButton);
     void setSlotTimeSize(int size);
     void updateLayerCount(int newCount);
@@ -92,6 +94,7 @@ private:
     int slotTimeSize;
     bool layerKeyboardSync;
     bool pauseButton;
+    bool pitchKeyboard;
     QMap<int, LayerData*> layers;
 
     void readData();

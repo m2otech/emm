@@ -82,7 +82,7 @@ font-weight:bold;</string>
 font-size:12px;</string>
         </property>
         <property name="text">
-         <string notr="true">2.5.0</string>
+         <string notr="true">2.5.1</string>
         </property>
        </widget>
       </item>

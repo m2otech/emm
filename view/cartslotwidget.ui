@@ -240,6 +240,18 @@ p, li { white-space: pre-wrap; }
           </widget>
          </item>
          <item>
+          <widget class="QGraphicsView" name="warningIcon">
+           <property name="enabled">
+            <bool>true</bool>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">background:transparent;
+text-align:center;
+border-image: url(:/icons/warning.png)</string>
+           </property>
+          </widget>
+         </item>
+         <item>
           <widget class="QPushButton" name="pauseButton">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Fixed" vsizetype="Expanding">

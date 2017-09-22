@@ -40,6 +40,7 @@ CartSlotWidget::CartSlotWidget(int number, QWidget *parent) :
     this->setNewNumber(number,false);
     this->setAcceptDrops(true);
     ui->pauseButton->setVisible(false);
+    //ui->warningIcon->setVisible(false);
 }
 
 CartSlotWidget::~CartSlotWidget()
@@ -62,9 +63,11 @@ void CartSlotWidget::setNewNumber(int number, bool dis, int displayNumber)
 
     // m2: Add warning sign if song file not found
     if (slot->isMissing())
-        ui->text1Label->setStyleSheet("background:transparent;\ntext-align:center;\nborder-image: url(:/icons/warning.png)");
+        ui->warningIcon->setVisible(true);
+        //ui->text1Label->setStyleSheet("background:transparent;\ntext-align:center;\nborder-image: url(:/icons/warning.png)");
     else
-        ui->text1Label->setStyleSheet("background:transparent;\ntext-align:center;");
+        ui->warningIcon->setVisible(false);
+        //ui->text1Label->setStyleSheet("background:transparent;\ntext-align:center;");
 
     showInfo();
     // m2: removed progress bar

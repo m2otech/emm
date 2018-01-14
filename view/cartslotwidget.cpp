@@ -85,6 +85,7 @@ void CartSlotWidget::setNewNumber(int number, bool dis, int displayNumber)
     connect(slot, SIGNAL(pausedSignal()), this, SLOT(pausedPlaying()));
 
     connect(ui->pauseButton, SIGNAL(clicked()), this, SLOT(pauseSlot()));
+
     updateLength(slot->getLength());
 
     // Update slot counter (useful if reset to zero)
@@ -123,6 +124,9 @@ void CartSlotWidget::showInfo()
     QFont font2 = ui->toPlayLabel->font();
     font2.setPixelSize(Configuration::getInstance()->getSlotTimeSize());
     ui->toPlayLabel->setFont(font2);
+
+    QString time = slot->getTimeToPlay();
+    ui->toPlayLabel->setText(time);
 
     this->setColor();
     slot->loadEqualizer();
@@ -258,7 +262,8 @@ void CartSlotWidget::stoppedPlaying()
 void CartSlotWidget::stoppedPlaying(bool reallyStopped)
 {
     updateLength(slot->getLength());
-    updatePosition(0);
+    //updatePosition(0);
+    updatePosition(slot->getStartPos());
     //ui->progressBar->setValue(ui->progressBar->maximum());
     this->setColor();
     ui->pauseButton->setVisible(false);

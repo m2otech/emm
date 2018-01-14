@@ -22,6 +22,8 @@
 #include "model/audio/cartslot.h"
 #include "slottablemodel.h"
 
+#include <math.h>
+
 #include "model/audio/audioprocessor.h"
 #include "model/audio/pflplayer.h"
 
@@ -40,7 +42,7 @@ int SlotTableModel::rowCount(const QModelIndex &parent) const
 
 int SlotTableModel::columnCount(const QModelIndex &parent) const
 {
-    return 6;
+    return 7;
 }
 
 QVariant SlotTableModel::data(const QModelIndex &index, int role) const
@@ -53,30 +55,33 @@ QVariant SlotTableModel::data(const QModelIndex &index, int role) const
         {
         // m2: changed order
         case 0: return s->getNumber();
-        case 3: return s->getText1();
-        case 5: return s->getFileName();
-        case 1: return s->getColor();
-        case 2: return s->getFontColor();
-        case 4: {
+        case 4: return s->getText1();
+        case 6: return s->getFileName();
+        case 2: return s->getColor();
+        case 3: return s->getFontColor();
+        case 1: {
             int usedId = CartSlot::isUsed(s->getFileName());
             if (usedId == -1) {
                 return "X";
             }
             return usedId;
         }
+        case 5:
+            QString time = s->getTimeToPlay();
+            return time;
         }
     }
     else if (role == Qt::BackgroundRole || role == Qt::ForegroundRole)
     {
         // m2: changed order
         //if (index.column() > 2)
-        if ( index.column() == 1 || index.column() == 2 )
+        if ( index.column() == 2 || index.column() == 3 )
         {
             CartSlot* s = slot.at(index.row());
             switch (index.column())
             {
-            case 1: return QColor(s->getColor());
-            case 2: return QColor(s->getFontColor());
+            case 2: return QColor(s->getColor());
+            case 3: return QColor(s->getFontColor());
             }
         }
 
@@ -92,14 +97,15 @@ QVariant SlotTableModel::headerData(int section, Qt::Orientation orientation, in
         {
         // m2: changed order
         case 0: return "ID";
-        case 3: return "Name";
-        case 5: return "Datei";
+        case 4: return "Name";
+        case 6: return "Datei";
         // m2: changed labels
-        case 1: return "HF";
-        case 2: return "SF";
+        case 2: return "HF";
+        case 3: return "SF";
         //case 3: return "Farbe";
         //case 4: return "Textfarbe";
-        case 4: return "SlotID";
+        case 1: return "SlotID";
+        case 5: return "Laufzeit";
         }
     }
     return QVariant();

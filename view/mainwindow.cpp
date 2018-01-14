@@ -127,6 +127,12 @@ void MainWindow::init() {
     connect(ui->pitchResetButton, SIGNAL(clicked()), this, SLOT(pitchReset()));
     connect(ui->resetPitchesAction, SIGNAL(triggered()), this, SLOT(resetPitches()));
 
+    // m2: Volume buttons
+    connect(ui->dbDownButton, SIGNAL(clicked()), this, SLOT(dbDown()));
+    connect(ui->dbUpButton, SIGNAL(clicked()), this, SLOT(dbUp()));
+    connect(ui->dbResetButton, SIGNAL(clicked()), this, SLOT(dbReset()));
+    connect(ui->resetVolumesAction, SIGNAL(triggered()), this, SLOT(resetVolumes()));
+
     connect(ui->switchToPlayer, SIGNAL(clicked()), this, SLOT(showPlayer()));
     connect(ui->switchToSlots, SIGNAL(clicked()), this, SLOT(showSlots()));
 
@@ -386,6 +392,24 @@ void MainWindow::pitchReset()
     this->pitchChange(0);
 }
 
+// m2: increase DB by 1%
+void MainWindow::dbUp()
+{
+    this->dbChange(1);
+}
+
+// m2: decrease DB by 1%
+void MainWindow::dbDown()
+{
+    this->dbChange(-1);
+}
+
+// m2: reset DB to slot default (value set in slot edit dialog and stored on disk)
+void MainWindow::dbReset()
+{
+    this->dbChange(0);
+}
+
 // m2: change = 0 => set pitch to default value (stored in slot)
 //     change <> 0 => set pitch to current pitch +- change
 void MainWindow::pitchChange(int change)
@@ -413,6 +437,37 @@ void MainWindow::pitchChange(int change)
                 slot->setPitch(newPitch);
             }
             pitchDisplayUpdate(slot->getPitch());
+        }
+    }
+}
+
+// m2: change = 0 => set volume to default value (stored in slot)
+//     change <> 0 => set volume to current volume +- change
+void MainWindow::dbChange(double change)
+{
+    MainWindow* currInstance = this->getInstance();
+
+    // Running slot(s)
+    int noOfSongs = currInstance->numberOfSlots;
+
+    // Find slot which is currently playing
+    CartSlot *slot = NULL;
+    for (int i = 0; i < noOfSongs; i++) {
+        slot = AudioProcessor::getInstance()->getCartSlotWithNumber(i);
+        int newDB;
+        if (slot->isPlaying()) {
+            if (change == 0) {
+                // reload value from disk
+                slot->loadFromSlot(i);
+                newDB = slot->getDB();
+                // set it explicitly to apply immediately
+                slot->setDB(newDB);
+            }
+            else {
+                newDB = slot->getDB() + change;
+                slot->setDB(newDB);
+            }
+            volumeDisplayUpdate(slot->getDB());
         }
     }
 }
@@ -462,6 +517,12 @@ void MainWindow::pitchDisplayUpdate(int pitch)
 {
     QString currPitch = QString("%1 \%").arg(pitch);
     ui->pitchResetButton->setText(currPitch);
+}
+
+void MainWindow::volumeDisplayUpdate(double db)
+{
+    QString currVol = QString("%1 db").arg(db);
+    ui->dbResetButton->setText(currVol);
 }
 
 void MainWindow::wheelEvent(QWheelEvent *e)
@@ -714,13 +775,15 @@ void MainWindow::updateCurrSongPosition(double pos2, int layerNo)
         setInfoBox(time);
     //qDebug("" + QString("%1").arg(infoBoxQueue));
 
-    if (infoBoxQueue.size() > 1) {
-        ui->infoBox->setStyleSheet("QLabel { color : red; }");
-        ui->infoBoxPL->setStyleSheet("QLabel { color : red; }");
-    }
-    else {
-        ui->infoBox->setStyleSheet("QLabel { color : black; }");
-        ui->infoBoxPL->setStyleSheet("QLabel { color : black; }");
+    if (RLA_RED_COLOR) {
+        if (infoBoxQueue.size() > 1) {
+            ui->infoBox->setStyleSheet("QLabel { color : red; }");
+            ui->infoBoxPL->setStyleSheet("QLabel { color : red; }");
+        }
+        else {
+            ui->infoBox->setStyleSheet("QLabel { color : black; }");
+            ui->infoBoxPL->setStyleSheet("QLabel { color : black; }");
+        }
     }
 }
 

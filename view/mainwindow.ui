@@ -11,17 +11,14 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Event Music Machine 2.5</string>
+   <string>Event Music Machine 2.5.2</string>
   </property>
   <property name="windowIcon">
    <iconset resource="icons.qrc">
     <normaloff>:/icons/icon.ico</normaloff>:/icons/icon.ico</iconset>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <layout class="QHBoxLayout" name="horizontalLayout_4">
-    <property name="spacing">
-     <number>2</number>
-    </property>
+   <layout class="QGridLayout" name="gridLayout_2">
     <property name="leftMargin">
      <number>0</number>
     </property>
@@ -34,7 +31,10 @@
     <property name="bottomMargin">
      <number>0</number>
     </property>
-    <item>
+    <property name="spacing">
+     <number>0</number>
+    </property>
+    <item row="0" column="0">
      <widget class="QStackedWidget" name="stackedWidget">
       <property name="enabled">
        <bool>true</bool>
@@ -42,14 +42,11 @@
       <property name="currentIndex">
        <number>0</number>
       </property>
-      <widget class="QWidget" name="stackedWidgetPage1">
+      <widget class="QWidget" name="SlotTable">
        <property name="enabled">
         <bool>true</bool>
        </property>
-       <layout class="QVBoxLayout" name="verticalLayout">
-        <property name="spacing">
-         <number>2</number>
-        </property>
+       <layout class="QGridLayout" name="gridLayout_3">
         <property name="leftMargin">
          <number>0</number>
         </property>
@@ -62,10 +59,13 @@
         <property name="bottomMargin">
          <number>0</number>
         </property>
-        <item>
-         <layout class="QHBoxLayout" name="horizontalLayout_3">
+        <property name="spacing">
+         <number>0</number>
+        </property>
+        <item row="0" column="0">
+         <layout class="QHBoxLayout" name="LayerBar">
           <property name="spacing">
-           <number>2</number>
+           <number>0</number>
           </property>
           <item>
            <widget class="QPushButton" name="pauseAllButton">
@@ -255,6 +255,70 @@
            </widget>
           </item>
           <item>
+           <widget class="QPushButton" name="dbDownButton">
+            <property name="minimumSize">
+             <size>
+              <width>28</width>
+              <height>28</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>28</width>
+              <height>28</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>-1</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="dbResetButton">
+            <property name="minimumSize">
+             <size>
+              <width>56</width>
+              <height>28</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>56</width>
+              <height>28</height>
+             </size>
+            </property>
+            <property name="font">
+             <font>
+              <pointsize>10</pointsize>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="text">
+             <string>0 db</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="dbUpButton">
+            <property name="minimumSize">
+             <size>
+              <width>28</width>
+              <height>28</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>28</width>
+              <height>28</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>+1</string>
+            </property>
+           </widget>
+          </item>
+          <item>
            <widget class="LayerSelector" name="layerSelector" native="true">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
@@ -289,12 +353,12 @@
           </item>
          </layout>
         </item>
-        <item>
+        <item row="1" column="0">
          <widget class="SlotTableWidget" name="slotTableWidget"/>
         </item>
        </layout>
       </widget>
-      <widget class="QWidget" name="stackedWidgetPage2">
+      <widget class="QWidget" name="PlaylistPlayer">
        <property name="enabled">
         <bool>true</bool>
        </property>
@@ -757,6 +821,7 @@ font-weight:bold;</string>
     <addaction name="clearLayerAction"/>
     <addaction name="resetCountersAction"/>
     <addaction name="resetPitchesAction"/>
+    <addaction name="resetVolumesAction"/>
    </widget>
    <addaction name="fileMenu"/>
    <addaction name="menuDiverses"/>
@@ -837,6 +902,11 @@ font-weight:bold;</string>
   <action name="resetPitchesAction">
    <property name="text">
     <string>Pitch bei allen Slots in diesem Layer zurücksetzen</string>
+   </property>
+  </action>
+  <action name="resetVolumesAction">
+   <property name="text">
+    <string>Lautstärke bei allen Slots in diesem Layer zurücksetzen</string>
    </property>
   </action>
  </widget>

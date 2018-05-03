@@ -56,14 +56,22 @@ SlotStoreDialog::SlotStoreDialog(QWidget *parent) :
     sortModel->setFilterCaseSensitivity(Qt::CaseInsensitive);
     ui->storeTable->setModel(sortModel);
     ui->storeTable->horizontalHeader()->setSectionResizeMode(0,QHeaderView::ResizeToContents);
-    ui->storeTable->horizontalHeader()->setSectionResizeMode(3,QHeaderView::Stretch);
-    ui->storeTable->horizontalHeader()->setSectionResizeMode(5,QHeaderView::Stretch);
-    ui->storeTable->horizontalHeader()->setSectionResizeMode(1,QHeaderView::Fixed);
+    //ui->storeTable->horizontalHeader()->setSectionResizeMode(4,QHeaderView::Stretch);
+    ui->storeTable->horizontalHeader()->setSectionResizeMode(4,QHeaderView::Interactive);
+    ui->storeTable->horizontalHeader()->resizeSection(4,220);
+    //ui->storeTable->horizontalHeader()->setSectionResizeMode(5,QHeaderView::Stretch);
+    ui->storeTable->horizontalHeader()->setSectionResizeMode(6,QHeaderView::Interactive);
+    ui->storeTable->horizontalHeader()->resizeSection(6,220);
     ui->storeTable->horizontalHeader()->setSectionResizeMode(2,QHeaderView::Fixed);
-    ui->storeTable->horizontalHeader()->setSectionResizeMode(4,QHeaderView::Fixed);
-    ui->storeTable->horizontalHeader()->resizeSection(1,25);
+    ui->storeTable->horizontalHeader()->setSectionResizeMode(3,QHeaderView::Fixed);
+    ui->storeTable->horizontalHeader()->setSectionResizeMode(1,QHeaderView::Fixed);
     ui->storeTable->horizontalHeader()->resizeSection(2,25);
-    ui->storeTable->horizontalHeader()->resizeSection(4,45);
+    ui->storeTable->horizontalHeader()->resizeSection(3,25);
+    ui->storeTable->horizontalHeader()->resizeSection(1,45);
+    ui->storeTable->horizontalHeader()->setSectionResizeMode(5,QHeaderView::Fixed);
+    ui->storeTable->horizontalHeader()->resizeSection(5,50);
+
+
     connect(ui->controlBar, SIGNAL(addClicked()), this, SLOT(addSlot()));
     connect(ui->controlBar, SIGNAL(editClicked()), this, SLOT(editSlot()));
     connect(ui->controlBar, SIGNAL(removeClicked()), this, SLOT(removeSlot()));

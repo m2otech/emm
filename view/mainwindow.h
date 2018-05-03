@@ -23,6 +23,9 @@
 
 #include "slotstoredialog.h"
 
+// CONFIGURATION OPTIONS
+#define RLA_RED_COLOR 0         // Change color of RLA if more than one title runs
+
 namespace Ui {
     class MainWindow;
 }
@@ -75,8 +78,9 @@ public:
     void infoBoxRemoveFromQueue(int);
     int infoBoxGetLast();
 
-    // m2: change pitch display when starting slot
+    // m2: change pitch/volume display when starting slot
     void pitchDisplayUpdate(int);
+    void volumeDisplayUpdate(double);
 
     bool isSlotShown(int);
 
@@ -118,11 +122,15 @@ private slots:
     // m2: pause/stop running slots
     void pauseSlots();
     void stopSlots();
-    // m2: pitch change while playing
+    // m2: pitch/volume change while playing
     void pitchUp();
     void pitchDown();
     void pitchReset();
+    void dbUp();
+    void dbDown();
+    void dbReset();
     void pitchChange(int);
+    void dbChange(double);
     void resetPitches();
     void resetPitches(bool);
     int getLayerFirstSlotId();

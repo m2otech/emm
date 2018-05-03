@@ -36,6 +36,8 @@ public:
     void setPitch(int);
     int getFontSize();
     double getDB();
+    // m2: set DB (volume)
+    void setDB(double);
     int getNumber();
 	double getLength();
     bool getEQActive();
@@ -64,6 +66,9 @@ public:
 
     // m2: get layer the slot belongs to (1-based)
     int getLayer();
+
+    // m2: get slot length minus start position
+    QString getTimeToPlay();
 
 private:
     CartSlot(int number, QObject *parent = 0, bool db=false);

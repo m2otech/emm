@@ -28,6 +28,8 @@
 #include "model/configuration.h"
 #include "playlistplayer.h"
 
+#include "math.h"
+
 #include "view/mainwindow.h"
 
 QMap<int,CartSlot*> CartSlot::audioObjects = QMap<int,CartSlot*>();
@@ -118,6 +120,21 @@ void CartSlot::pause()
     }
 }
 
+QString CartSlot::getTimeToPlay()
+{
+    // To get slot length need to fetch first, then get
+    this->fetchLength();
+    double pos2 = this->getLength() - this->getStartPos();
+    if (pos2 < 0)
+        pos2 = 0;
+    int mins2 = pos2/60;
+    int secs2 = floor(pos2-mins2*60);
+    int msecs2 = floor((pos2-mins2*60-secs2)*10);
+    QString time = QString("%1:%2.%3").arg(mins2,2, 10, QChar('0')).arg(secs2,2,10, QChar('0')).arg(msecs2);
+
+    return time;
+}
+
 bool CartSlot::getLetFade()
 {
     return this->letFade;
@@ -179,6 +196,19 @@ int CartSlot::getFontSize()
 double CartSlot::getDB()
 {
     return this->db;
+}
+
+void CartSlot::setDB(double db)
+{
+    this->db = db;
+
+    HFX hstream = BASS_ChannelSetFX(stream, BASS_FX_BFX_VOLUME,0);
+    BASS_BFX_VOLUME volume;
+    volume.fVolume = DBToLevel(db);
+    volume.lChannel = 0;
+    BASS_FXSetParameters(hstream,&volume);
+
+    //BASS_ChannelSetAttribute(stream, BASS_BFX_VOLUME, this->db);
 }
 
 int CartSlot::getNumber()

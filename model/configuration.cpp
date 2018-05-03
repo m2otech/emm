@@ -17,6 +17,7 @@
 
 #include <QMutex>
 #include <QSettings>
+#include <QMessageBox>
 #include "configuration.h"
 #include "layerdata.h"
 #include "model/audio/bassdevice.h"
@@ -122,6 +123,26 @@ QMap<int, LayerData*> Configuration::getLayers() {
     return this->layers;
 }
 
+bool Configuration::getLayerbarPauseButton() {
+    return this->layerbarShowPause;
+}
+
+bool Configuration::getLayerbarStopButton() {
+    return this->layerbarShowStop;
+}
+
+bool Configuration::getLayerbarPitchControl() {
+    return this->layerbarShowPitch;
+}
+
+bool Configuration::getLayerbarPlaylistButton() {
+    return this->layerbarShowPlaylist;
+}
+
+bool Configuration::getLayerbarRLADisplay() {
+    return this->layerbarShowRLA;
+}
+
 void Configuration::setHorizontalSlots(int horizontalSlots)
 {
     this->horizontalSlots = horizontalSlots;
@@ -208,6 +229,33 @@ void Configuration::setPauseButton(bool pauseButton)
     this->pauseButton = pauseButton;
 }
 
+// m2: Options for layer bar
+void Configuration::setLayerbarPauseButton(bool state)
+{
+    //QMessageBox::information(MainWindow::getInstance(),tr("Konfiguration aktualisiert"),tr("Bitte starten Sie das Programm neu um die neuen Daten zu laden."));
+    this->layerbarShowPause = state;
+}
+
+void Configuration::setLayerbarStopButton(bool state)
+{
+    this->layerbarShowStop = state;
+}
+
+void Configuration::setLayerbarPitchControl(bool state)
+{
+    this->layerbarShowPitch = state;
+}
+
+void Configuration::setLayerbarRLADisplay(bool state)
+{
+    this->layerbarShowRLA = state;
+}
+
+void Configuration::setLayerbarPlaylistButton(bool state)
+{
+    this->layerbarShowPlaylist = state;
+}
+
 void Configuration::setSlotTimeSize(int size) {
     this->slotTimeSize = size;
 }
@@ -233,6 +281,13 @@ void Configuration::readData()
     pauseButton = settings.value("Slots/PauseButton",false).toBool();
     slotTimeSize = settings.value("Slots/TimeSize",10).toInt();
     pitchKeyboard = settings.value("Slots/PitchKeyboard",false).toBool();
+
+    // m2: Options for layer bar
+    layerbarShowPause = settings.value("Layerbar/PauseButton",true).toBool();
+    layerbarShowStop = settings.value("Layerbar/StopButton",true).toBool();
+    layerbarShowPitch = settings.value("Layerbar/PitchControl",true).toBool();
+    layerbarShowRLA = settings.value("Layerbar/RLADisplay",true).toBool();
+    layerbarShowPlaylist = settings.value("Layerbar/PlaylistButton",true).toBool();
 
     layers.clear();
     for (int i=0;i<layer;i++) {
@@ -266,6 +321,13 @@ void Configuration::saveData()
     settings.setValue("Slots/PitchKeyboard",pitchKeyboard);
     BassDevice::setBuffer(slotBuffer);
     BassAsioDevice::setBuffer(slotBuffer);
+
+    // m2: Options for layer bar
+    settings.setValue("Layerbar/PauseButton", layerbarShowPause);
+    settings.setValue("Layerbar/StopButton", layerbarShowStop);
+    settings.setValue("Layerbar/PitchControl", layerbarShowPitch);
+    settings.setValue("Layerbar/RLADisplay", layerbarShowRLA);
+    settings.setValue("Layerbar/PlaylistButton", layerbarShowPlaylist);
 
     for (int i=0;i<layer;i++) {
         LayerData *data = layers.value(i);

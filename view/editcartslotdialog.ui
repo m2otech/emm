@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>442</width>
-    <height>511</height>
+    <height>518</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -251,14 +251,14 @@
          <item>
           <widget class="QPushButton" name="saveSlotButton">
            <property name="text">
-            <string>Im Slot-Speicher ablegen</string>
+            <string>Im Slot-Store ablegen</string>
            </property>
           </widget>
          </item>
          <item>
           <widget class="QPushButton" name="loadSlotButton">
            <property name="text">
-            <string>Aus Slot-Speicher laden</string>
+            <string>Aus Slot-Store laden</string>
            </property>
           </widget>
          </item>
@@ -714,8 +714,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>98</width>
-            <height>181</height>
+            <width>400</width>
+            <height>184</height>
            </rect>
           </property>
          </widget>

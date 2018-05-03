@@ -60,6 +60,13 @@ ConfigurationDialog::ConfigurationDialog(QWidget *parent) :
     ui->slotTimeSpinBox->setValue(config->getSlotTimeSize());
     ui->pauseCheckBox->setChecked(config->getPauseButton());
 
+    // m2: Options for layer bar
+    ui->showPauseButtonCheckBox->setChecked(config->getLayerbarPauseButton());
+    ui->showStopButtonCheckBox->setChecked(config->getLayerbarStopButton());
+    ui->showPitchControlCheckBox->setChecked(config->getLayerbarPitchControl());
+    ui->showPlaylistButtonCheckBox->setChecked(config->getLayerbarPlaylistButton());
+    ui->showRLACheckBox->setChecked(config->getLayerbarRLADisplay());
+
     // m2: remove this option for 2.2 (and set default to unchecked)
     ui->pauseCheckBox->setVisible(false);
     ui->pauseCheckBox->setChecked(false);
@@ -111,6 +118,13 @@ void ConfigurationDialog::saveAndClose()
     config->setSlotBuffer(ui->bufferSpinBox->value());
     config->setSlotTimeSize(ui->slotTimeSpinBox->value());
     config->setPauseButton(ui->pauseCheckBox->isChecked());
+
+    config->setLayerbarPauseButton(ui->showPauseButtonCheckBox->isChecked());
+    config->setLayerbarStopButton(ui->showStopButtonCheckBox->isChecked());
+    config->setLayerbarPitchControl(ui->showPitchControlCheckBox->isChecked());
+    config->setLayerbarRLADisplay(ui->showRLACheckBox->isChecked());
+    config->setLayerbarPlaylistButton(ui->showPlaylistButtonCheckBox->isChecked());
+
     config->saveData();
     done(1);
 }
@@ -129,6 +143,11 @@ void ConfigurationDialog::selectionChanged() {
             ui->visibleCheckBox->setChecked(config->getLayers().value(layerId)->getVisible());
             connect(ui->layerNameText, SIGNAL(textChanged(QString)), this, SLOT(updateLayerName(QString)));
             connect(ui->visibleCheckBox, SIGNAL(clicked(bool)), this, SLOT(updateLayerEnabled(bool)));
+            connect(ui->showPauseButtonCheckBox, SIGNAL(clicked(bool)), this, SLOT(showRestartWarning(bool)));
+            connect(ui->showPitchControlCheckBox, SIGNAL(clicked(bool)), this, SLOT(showRestartWarning(bool)));
+            connect(ui->showPlaylistButtonCheckBox, SIGNAL(clicked(bool)), this, SLOT(showRestartWarning(bool)));
+            connect(ui->showRLACheckBox, SIGNAL(clicked(bool)), this, SLOT(showRestartWarning(bool)));
+            connect(ui->showStopButtonCheckBox, SIGNAL(clicked(bool)), this, SLOT(showRestartWarning(bool)));
         }
     } else {
         if (index == 1)
@@ -161,4 +180,8 @@ void ConfigurationDialog::updateLayerEnabled(bool enabled) {
 void ConfigurationDialog::updateLayerName(QString name) {
     Configuration *config = Configuration::getInstance();
     config->getLayers().value(layerId)->setName(name);
+}
+
+void ConfigurationDialog::showRestartWarning(bool checked) {
+    QMessageBox::information(this,tr("Konfiguration aktualisiert"),tr("Nach dieser Änderung muss die EMM neu gestartet werden."));
 }

@@ -127,11 +127,17 @@ void MainWindow::init() {
     connect(ui->pitchResetButton, SIGNAL(clicked()), this, SLOT(pitchReset()));
     connect(ui->resetPitchesAction, SIGNAL(triggered()), this, SLOT(resetPitches()));
 
-    // m2: Volume buttons
+    // m2: Volume buttons (DISABLED IN 2.5.3)
     connect(ui->dbDownButton, SIGNAL(clicked()), this, SLOT(dbDown()));
     connect(ui->dbUpButton, SIGNAL(clicked()), this, SLOT(dbUp()));
     connect(ui->dbResetButton, SIGNAL(clicked()), this, SLOT(dbReset()));
-    connect(ui->resetVolumesAction, SIGNAL(triggered()), this, SLOT(resetVolumes()));
+
+    //connect(ui->resetVolumesAction, SIGNAL(triggered()), this, SLOT(resetVolumes()));
+
+    // HIDE VOLUME BUTTONS (DISABLE)
+    ui->dbResetButton->setVisible(false);
+    ui->dbDownButton->setVisible(false);
+    ui->dbUpButton->setVisible(false);
 
     connect(ui->switchToPlayer, SIGNAL(clicked()), this, SLOT(showPlayer()));
     connect(ui->switchToSlots, SIGNAL(clicked()), this, SLOT(showSlots()));
@@ -143,6 +149,16 @@ void MainWindow::init() {
     // m2: Set "crossed arrows" always on and disable it to avoid bug #21
     ui->autoPlayCheckBox->setChecked(true);
     ui->autoPlayCheckBox->setDisabled(true);
+
+    // m2: show/hide layerbar buttons
+    Configuration *config = Configuration::getInstance();
+    ui->pauseAllButton->setVisible(config->getLayerbarPauseButton());
+    ui->stopAllButton->setVisible(config->getLayerbarStopButton());
+    ui->pitchDownButton->setVisible(config->getLayerbarPitchControl());
+    ui->pitchResetButton->setVisible(config->getLayerbarPitchControl());
+    ui->pitchUpButton->setVisible(config->getLayerbarPitchControl());
+    ui->infoBox->setVisible(config->getLayerbarRLADisplay());
+    ui->switchToPlayer->setVisible(config->getLayerbarPlaylistButton());
 
     // m2: !!!! DEBUG !!!!
     // to re-enable create a lineEdit text entry widget in main gui

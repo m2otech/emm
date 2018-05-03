@@ -46,6 +46,14 @@ public:
     bool getPauseButton();
     int getSlotTimeSize();
     QMap<int, LayerData*> getLayers();
+
+    // m2: Options for layer bar
+    bool getLayerbarPauseButton();
+    bool getLayerbarStopButton();
+    bool getLayerbarPitchControl();
+    bool getLayerbarRLADisplay();
+    bool getLayerbarPlaylistButton();
+
     void setHorizontalSlots(int horizontalSlots);
     void setVerticalSlots(int verticalSlots);
     void setPFLDriver(int pflDriver);
@@ -63,6 +71,14 @@ public:
     void setLayerKeyboardSync(bool layerKeyboardSync);
     void setPitchKeyboard(bool);
     void setPauseButton(bool pauseButton);
+
+    // m2: Options for layer bar
+    void setLayerbarPauseButton(bool);
+    void setLayerbarStopButton(bool);
+    void setLayerbarPitchControl(bool);
+    void setLayerbarRLADisplay(bool);
+    void setLayerbarPlaylistButton(bool);
+
     void setSlotTimeSize(int size);
     void updateLayerCount(int newCount);
     void saveData();
@@ -97,8 +113,13 @@ private:
     bool pitchKeyboard;
     QMap<int, LayerData*> layers;
 
-    void readData();
+    bool layerbarShowPause;
+    bool layerbarShowStop;
+    bool layerbarShowPitch;
+    bool layerbarShowPlaylist;
+    bool layerbarShowRLA;
 
+    void readData();
 };
 
 #endif // CONFIGURATION_H

@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Event Music Machine 2.5.2</string>
+   <string>Event Music Machine 2.5.3</string>
   </property>
   <property name="windowIcon">
    <iconset resource="icons.qrc">
@@ -821,7 +821,6 @@ font-weight:bold;</string>
     <addaction name="clearLayerAction"/>
     <addaction name="resetCountersAction"/>
     <addaction name="resetPitchesAction"/>
-    <addaction name="resetVolumesAction"/>
    </widget>
    <addaction name="fileMenu"/>
    <addaction name="menuDiverses"/>

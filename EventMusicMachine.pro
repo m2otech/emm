@@ -20,6 +20,7 @@ QT       += core gui sql widgets
 TARGET = EventMusicMachine
 TEMPLATE = app
 CONFIG += x86
+CONFIG += c++11
 
 DESTDIR = bin
 MOC_DIR += moc
@@ -81,7 +82,9 @@ SOURCES += main.cpp\
     model/layerdata.cpp \
     view/slottablewidget.cpp \
     model/resetpitchesthread.cpp \
-    model/slotstoreimportthread.cpp
+    model/slotstoreimportthread.cpp \
+    view/slotstorerenamedialog.cpp \
+    globals.cpp
 
 
 HEADERS += view/mainwindow.h \
@@ -125,7 +128,10 @@ HEADERS += view/mainwindow.h \
     model/layerdata.h \
     view/slottablewidget.h \
     model/resetpitchesthread.h \
-    model/slotstoreimportthread.h
+    model/slotstoreimportthread.h \
+    view/slotstorerenamedialog.h \
+    config.h \
+    globals.h
 
 
 FORMS += view/mainwindow.ui \
@@ -137,7 +143,8 @@ FORMS += view/mainwindow.ui \
     view/deviceselectwidget.ui \
     view/aboutdialog.ui \
     view/slotstoredialog.ui \
-    view/loadslotdialog.ui
+    view/loadslotdialog.ui \
+    view/slotstorerenamedialog.ui
 
 RESOURCES += \
     view/icons.qrc \

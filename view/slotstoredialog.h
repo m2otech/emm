@@ -59,6 +59,7 @@ private slots:
     void removeSlot();
     void playSlot();
     void stopSlot();
+    void renameSlot();
     void setTitle(QString);
 
 protected:

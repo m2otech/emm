@@ -27,6 +27,8 @@
 #include "slotstoredialog.h"
 #include "ui_slotstoredialog.h"
 
+#include "slotstorerenamedialog.h"
+
 #include "model/audio/audioprocessor.h"
 #include "model/audio/bassasiodevice.h"
 #include "model/audio/bassdevice.h"
@@ -41,6 +43,9 @@ SlotStoreDialog::SlotStoreDialog(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::SlotStoreDialog)
 {
+
+    // m2: Added this to destroy object when closed (in this way destructor is called)
+    this->setAttribute(Qt::WA_DeleteOnClose);
 
     player = AudioProcessor::getInstance()->getPFLPlayer();
 
@@ -77,6 +82,7 @@ SlotStoreDialog::SlotStoreDialog(QWidget *parent) :
     connect(ui->controlBar, SIGNAL(removeClicked()), this, SLOT(removeSlot()));
     connect(ui->controlBar, SIGNAL(playClicked()), this, SLOT(playSlot()));
     connect(ui->controlBar, SIGNAL(stopClicked()), this, SLOT(stopSlot()));
+    connect(ui->controlBar, SIGNAL(renameClicked()), this, SLOT(renameSlot()));
     //connect(ui->controlBar, SIGNAL(playClicked()), player, SLOT(play()));
     //connect(ui->controlBar, SIGNAL(stopClicked()), player, SLOT(stop()));
     connect(ui->storeTable, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(editSlot(QModelIndex)));
@@ -89,6 +95,8 @@ SlotStoreDialog::SlotStoreDialog(QWidget *parent) :
 
 SlotStoreDialog::~SlotStoreDialog()
 {
+    //qDebug() << QString("Closing Slotstore");
+    model->stopWithId(-1);
     delete ui;
 }
 
@@ -168,6 +176,26 @@ void SlotStoreDialog::stopSlot()
 {
     int id = ui->storeTable->currentIndex().row();
     model->stopWithId(id);
+}
+
+void SlotStoreDialog::renameSlot()
+{
+    SlotStoreRenameDialog* dialog = new SlotStoreRenameDialog();
+    int res = dialog->exec();
+
+    if (res == QDialog::Accepted)
+    {
+        //qDebug() << QString("OK");
+        QString replaceWhat = dialog->getReplaceWhat();
+        QString replaceWith = dialog->getReplaceWith();
+        model->replaceSlotFilename(replaceWhat, replaceWith);
+        model->loadData();
+        if (dialog->getReplaceSlotsCheckBox())
+            MainWindow::getInstance()->renameSlotsFilename(replaceWhat, replaceWith);
+    }
+    //else
+        //qDebug() << QString("Cancel");
+
 }
 
 // m2: drag & drop files

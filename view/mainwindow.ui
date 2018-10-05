@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Event Music Machine 2.5.3</string>
+   <string>Event Music Machine 2.5.5 BETA</string>
   </property>
   <property name="windowIcon">
    <iconset resource="icons.qrc">

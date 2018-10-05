@@ -48,6 +48,8 @@
 #include "slottablewidget.h"
 #include "ui_mainwindow.h"
 
+#include "../globals.h"
+
 #include "model/audio/pflplayer.h"
 
 #include <QCloseEvent>
@@ -75,6 +77,9 @@ MainWindow::~MainWindow()
 
 void MainWindow::init() {
     ui->setupUi(this);
+
+    Globals *globals = new Globals();
+    this->setWindowTitle("Event Music Machine " + globals->getVersion());
 
     // m2: Point MainWindow::instance to correct location after initializing UI
     this->instance = this;
@@ -857,4 +862,22 @@ void MainWindow::showPlayer()
 void MainWindow::showSlots()
 {
     ui->stackedWidget->setCurrentIndex(0);
+}
+
+// m2:
+void MainWindow::renameSlotsFilename(QString replaceWhat, QString replaceWith)
+{
+    //Configuration *conf = Configuration::getInstance();
+    MainWindow* currInstance = this->getInstance();
+
+    int noOfSongs = currInstance->numberOfSlots;
+
+    CartSlot *slot = NULL;
+    for (int i = 0; i < noOfSongs; i++) {
+        slot = AudioProcessor::getInstance()->getCartSlotWithNumber(i);
+        //slot->filename.replace(replaceWhat, replaceWith);
+        QString oldFilename = slot->getFileName();
+        if (oldFilename.contains(replaceWhat))
+            slot->setFilename(oldFilename.replace(replaceWhat, replaceWith));
+    }
 }

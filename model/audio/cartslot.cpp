@@ -261,6 +261,12 @@ void CartSlot::setDataAndSave(QString filename, QString text1, int type, int dev
     }
 }
 
+void CartSlot::setFilename(QString filename)
+{
+    this->filename = filename;
+    this->saveData();
+}
+
 void CartSlot::setColorsAndSave(QString color, QString fontColor)
 {
     this->color = color;
@@ -568,3 +574,8 @@ int CartSlot::getLayer()
 
     return (int)(this->getNumber() / slotsPerLayer) + 1;
 }
+
+//int CartSlot::replaceFilename(QString replaceWhat, QString replaceWith)
+//{
+    // TODO if filename contains replaceWhat replace it with replaceWith, then saveData
+//}

@@ -35,6 +35,7 @@ private:
     QPushButton *removeButton;
     QPushButton *playButton;
     QPushButton *stopButton;
+    QPushButton *renameButton;
 
     QHBoxLayout *mainLayout;
 
@@ -44,6 +45,7 @@ private slots:
     void progessRemove();
     void processPlay();
     void processStop();
+    void processRename();
 
 signals:
     void addClicked();
@@ -51,6 +53,7 @@ signals:
     void removeClicked();
     void playClicked();
     void stopClicked();
+    void renameClicked();
 };
 
 #endif // TFCONTROLBAR_H

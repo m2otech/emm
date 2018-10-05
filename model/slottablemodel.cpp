@@ -15,6 +15,7 @@
  * along with Event Music Machine. If not, see <http://www.gnu.org/licenses/>.
  * ************************************************************************* */
 
+#include <QDebug>
 #include <QColor>
 #include <QMimeData>
 #include <QSqlDatabase>
@@ -180,3 +181,18 @@ int SlotTableModel::getIdPos(int id)
 {
     return idList.indexOf(id);
 }
+
+// m2
+void SlotTableModel::replaceSlotFilename(QString replaceWhat, QString replaceWith)
+{
+    //this->beginResetModel();
+
+    QSqlQuery query("UPDATE slots SET filename = replace(filename, '" + replaceWhat + "', '" + replaceWith + "')");
+    //qDebug() << QString("Called rename");
+
+    // NB: The previous statement already executes the query, no need to exec
+    // query.exec();
+
+    //this->endResetModel();
+}
+

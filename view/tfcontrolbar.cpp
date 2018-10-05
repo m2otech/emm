@@ -20,6 +20,8 @@
 #include <QSpacerItem>
 #include "tfcontrolbar.h"
 
+#include "../globals.h"
+
 TFControlBar::TFControlBar(QWidget *parent) :
     QWidget(parent)
 {
@@ -51,6 +53,15 @@ TFControlBar::TFControlBar(QWidget *parent) :
     stopButton->setIconSize(QSize(20,20));
     stopButton->setIcon(QIcon(":/icons/control_stop_blue.png"));
 
+    // m2: Open file rename dialog
+    renameButton = new QPushButton(this);
+    renameButton->setFixedSize(30,30);
+    renameButton->setIconSize(QSize(20,20));
+    renameButton->setIcon(QIcon(":/icons/server_components.png"));
+
+    Globals *globals = new Globals();
+    renameButton->setVisible(globals->isRV());
+
     spacer = new QSpacerItem(0,0,QSizePolicy::Expanding);
 
     mainLayout = new QHBoxLayout(this);
@@ -61,6 +72,7 @@ TFControlBar::TFControlBar(QWidget *parent) :
     mainLayout->addWidget(removeButton);
     mainLayout->addWidget(playButton);
     mainLayout->addWidget(stopButton);
+    mainLayout->addWidget(renameButton);
     mainLayout->addSpacerItem(spacer);
 
     setLayout(mainLayout);
@@ -72,6 +84,7 @@ TFControlBar::TFControlBar(QWidget *parent) :
     connect(removeButton,SIGNAL(clicked()), this, SLOT(progessRemove()));
     connect(playButton,SIGNAL(clicked()), this, SLOT(processPlay()));
     connect(stopButton,SIGNAL(clicked()), this, SLOT(processStop()));
+    connect(renameButton,SIGNAL(clicked()), this, SLOT(processRename()));
 
     setStyleSheet(" \
            QWidget#controlBar { \
@@ -123,4 +136,9 @@ void TFControlBar::processPlay()
 void TFControlBar::processStop()
 {
     emit stopClicked();
+}
+
+void TFControlBar::processRename()
+{
+    emit renameClicked();
 }

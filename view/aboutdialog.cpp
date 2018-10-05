@@ -18,11 +18,17 @@
 #include "aboutdialog.h"
 #include "ui_aboutdialog.h"
 
+#include "../globals.h"
+
 AboutDialog::AboutDialog(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::AboutDialog)
 {
+    Globals *globals = new Globals();
+
     ui->setupUi(this);
+    ui->versionString->setText(globals->getVersion());
+
     connect(ui->closeButton, SIGNAL(clicked()),this,SLOT(close()));
 }
 

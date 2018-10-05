@@ -70,6 +70,9 @@ public:
     // m2: get slot length minus start position
     QString getTimeToPlay();
 
+    // m2: set filename only
+    void setFilename(QString);
+
 private:
     CartSlot(int number, QObject *parent = 0, bool db=false);
     QString text1;

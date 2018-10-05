@@ -39,6 +39,7 @@ public:
     QVariant data(const QModelIndex &index, int role) const;
     QVariant headerData(int section, Qt::Orientation orientation, int role) const;
     Qt::DropActions supportedDragActions() const;
+    void replaceSlotFilename(QString, QString);
 
     int getIdPos(int);
 

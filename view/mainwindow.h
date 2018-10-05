@@ -82,6 +82,9 @@ public:
     void pitchDisplayUpdate(int);
     void volumeDisplayUpdate(double);
 
+    // m2: rename filename fields in all slots
+    void renameSlotsFilename(QString, QString);
+
     bool isSlotShown(int);
 
     SlotStoreDialog* ssdGlobalThread;

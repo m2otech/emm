@@ -45,6 +45,17 @@ PlaylistEntry* Playlist::addEntry(QString filename, int pos)
         entries.insert(pos,newEntry);
 
     this->assignEntriesToPlayers();
+
+    // m2: Update TOT LENGTH
+    double remaining = this->getTotalLength();
+    int mins2 = remaining/60;
+    int secs2 = floor(remaining-mins2*60);
+    int msecs2 = floor((remaining-mins2*60-secs2)*10);
+    QString time = QString("TOT %1:%2.%3").arg(mins2, 2, 10, QChar('0')).arg(secs2,2,10, QChar('0')).arg(msecs2);
+
+    if (time.size() > 0)
+        MainWindow::getInstance()->setInfoBox_2(time);
+
     return newEntry;
 }
 
@@ -72,6 +83,32 @@ void Playlist::move(int pos1, int pos2)
 QList<PlaylistEntry*> Playlist::getEntries()
 {
     return entries;
+}
+
+//m2: total playlist length
+double Playlist::getTotalLength()
+{
+    double sum = 0;
+    for (int i = 0; i < entries.size(); i++)
+        sum += entries.at(i)->getLength();
+
+    //qDebug() << QString("Total length: %1").arg(sum);
+    return sum;
+}
+
+//m2: playlist length to play
+double Playlist::getRemainingLength()
+{
+    double sum = 0;
+    int curr = 0;
+    for (int i = 0; i < entries.size(); i++)
+        if (playing.contains(entries.at(i)))
+            curr = i;
+    for (int i = curr + 1; i < entries.size(); i++)
+        sum += entries.at(i)->getLength();
+
+    //qDebug() << QString("Remaining length: %1").arg(sum);
+    return sum;
 }
 
 void Playlist::assignEntriesToPlayers()
@@ -147,6 +184,7 @@ void Playlist::fadeNext()
 {
     int started;
     QMapIterator<int, PlaylistPlayer*> players2(PlaylistPlayer::getPlayers());
+
     while (players2.hasNext()) {
         players2.next();
         if (!players2.value()->isPlaying())
@@ -168,6 +206,7 @@ void Playlist::fadeNext()
             players.value()->fadeOut(ms);
         }
     }
+    this->getRemainingLength();
 }
 
 void Playlist::addItemToPlaying(PlaylistEntry *entry)

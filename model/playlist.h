@@ -34,6 +34,8 @@ public:
     void move(int pos1, int pos2);
     QList<PlaylistEntry*> getEntries();
 
+    double getRemainingLength();
+
 private:
     Playlist() {}
     Playlist(const Playlist &);
@@ -43,6 +45,9 @@ private:
     QList<PlaylistEntry*> entries;
     QList<PlaylistEntry*> playing;
     bool autoPlay;
+
+    double getTotalLength();
+
 
 public slots:
     void assignEntriesToPlayers();

@@ -269,9 +269,9 @@ void CartSlotWidget::stoppedPlaying(bool reallyStopped)
     ui->pauseButton->setVisible(false);
 
     if (reallyStopped) {
-        // m2: increase slot counter
-        MainWindow::getInstance()->increaseCounter(slot->getNumber() - 1);
-        updateSlotCounter(MainWindow::getInstance()->playedCtr[(slot->getNumber() - 1)]);
+        // m2: increase slot counter (MOVED TO startedPlaying)
+        //MainWindow::getInstance()->increaseCounter(slot->getNumber() - 1);
+        //updateSlotCounter(MainWindow::getInstance()->playedCtr[(slot->getNumber() - 1)]);
 
         // m2: change to previously selected layer (if keyboard controls layer 1 only)
         // v2.3: disabled because now we don't change to layer 1 on hotkey press
@@ -295,6 +295,10 @@ void CartSlotWidget::pausedPlaying()
 
 void CartSlotWidget::startedPlaying()
 {
+    // m2: increase slot counter (MOVED HERE FROM stoppedPlaying)
+    MainWindow::getInstance()->increaseCounter(slot->getNumber() - 1);
+    updateSlotCounter(MainWindow::getInstance()->playedCtr[(slot->getNumber() - 1)]);
+
     //if (Configuration::getInstance()->getPauseButton()) {
     // m2: also check if pause is enabled on this slot
     if ( (Configuration::getInstance()->getPauseButton()) && (!slot->getPauseDisabled()) ) {

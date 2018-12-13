@@ -269,6 +269,8 @@ void MainWindow::keyboardSignal(int key, int pressed)
         } else if (key==124) {
             // Slot-Speicher an/aus
             //showSlotStore();
+            if (ssdGlobal == NULL)
+                ssdGlobal = new SlotStoreDialog(this);
             if (ssdGlobal->isVisible())
                 ssdGlobal->hide();
             else
@@ -775,6 +777,11 @@ void MainWindow::setInfoBox(QString text)
     ui->infoBoxPL->setText(text);
 }
 
+void MainWindow::setInfoBox_2(QString text)
+{
+    ui->infoBoxPL_2->setText(text);
+}
+
 // m2: updates the RLA (pos2 is the time left in song)
 void MainWindow::updateCurrSongPosition(double pos2, int layerNo)
 {    
@@ -806,6 +813,18 @@ void MainWindow::updateCurrSongPosition(double pos2, int layerNo)
             ui->infoBoxPL->setStyleSheet("QLabel { color : black; }");
         }
     }
+
+    double remaining = pos2 + Playlist::getInstance()->getRemainingLength();
+    mins2 = remaining/60;
+    secs2 = floor(remaining-mins2*60);
+    msecs2 = floor((remaining-mins2*60-secs2)*10);
+    time = "";
+    if (layerNo < -1000) {
+        // Playlist in RLA
+        time = QString("TOT %1:%2.%3").arg(mins2, 2, 10, QChar('0')).arg(secs2,2,10, QChar('0')).arg(msecs2);
+    }
+    if (time.size() > 0)
+        setInfoBox_2(time);
 }
 
 // m2: add/remove/get info about song to be in the RLA
@@ -880,4 +899,10 @@ void MainWindow::renameSlotsFilename(QString replaceWhat, QString replaceWith)
         if (oldFilename.contains(replaceWhat))
             slot->setFilename(oldFilename.replace(replaceWhat, replaceWith));
     }
+}
+
+// m2: remove pointer to ssdGlobal (slotstore instance)
+void MainWindow::ssdGlobalDelete()
+{
+    ssdGlobal = NULL;
 }

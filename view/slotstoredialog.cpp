@@ -98,6 +98,8 @@ SlotStoreDialog::~SlotStoreDialog()
     //qDebug() << QString("Closing Slotstore");
     model->stopWithId(-1);
     delete ui;
+    // m2: make sure ssdGlobal pointer is deleted (slot store instance via preh)
+    MainWindow::getInstance()->ssdGlobalDelete();
 }
 
 void SlotStoreDialog::addSlot()

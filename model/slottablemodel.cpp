@@ -20,6 +20,8 @@
 #include <QMimeData>
 #include <QSqlDatabase>
 #include <QSqlQuery>
+#include <QList>
+#include <QUrl>
 #include "model/audio/cartslot.h"
 #include "slottablemodel.h"
 
@@ -33,7 +35,6 @@ SlotTableModel::SlotTableModel(QObject *parent) :
 {
     // m2: Init player to be used to play preview
     player = AudioProcessor::getInstance()->getPFLPlayer();
-
 }
 
 int SlotTableModel::rowCount(const QModelIndex &parent) const
@@ -54,7 +55,7 @@ QVariant SlotTableModel::data(const QModelIndex &index, int role) const
         CartSlot* s = slot.at(row);
         switch (index.column())
         {
-        // m2: changed order
+        // m2: changed order, all text columns here
         case 0: return s->getNumber();
         case 4: return s->getText1();
         case 6: return s->getFileName();
@@ -74,7 +75,7 @@ QVariant SlotTableModel::data(const QModelIndex &index, int role) const
     }
     else if (role == Qt::BackgroundRole || role == Qt::ForegroundRole)
     {
-        // m2: changed order
+        // m2: changed order, color columns here (SF/HF)
         //if (index.column() > 2)
         if ( index.column() == 2 || index.column() == 3 )
         {
@@ -122,10 +123,27 @@ QMimeData* SlotTableModel::mimeData(const QModelIndexList &indexes) const
     if (indexes.size() == 0)
         return 0;
 
+    // m2: this is the number of rows we are dragging (7 = columns, data serialized)
+    const int num_of_columns = 7;
+    int num_of_rows = indexes.size() / num_of_columns;
+
     QMimeData *mimeData = new QMimeData();
-    int id = data(index(indexes.at(0).row(),0),Qt::DisplayRole).toInt();
-    QByteArray encodedData = QByteArray::number(id);
-    mimeData->setData("application/emm.store.objectid",encodedData);
+    //m2: add all selected rows instead of only first row
+    //int id = data(index(indexes.at(0).row(),0),Qt::DisplayRole).toInt();
+    //QByteArray encodedData = QByteArray::number(id);
+    //mimeData->setData("application/emm.store.objectid",encodedData);
+
+    int id = 0;
+    QList<QUrl> urls;
+    for (int i=0; i<num_of_rows; i++)
+    {
+        id = data( index(indexes.at(i * num_of_columns).row(), 0), Qt::DisplayRole ).toInt();
+        urls.append(QUrl(QByteArray::number(id)));
+    }
+
+    //m2: using URLs to transfer an array of int
+    mimeData->setUrls(urls);
+
     return mimeData;
 }
 

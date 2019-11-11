@@ -349,6 +349,15 @@ void MainWindow::keyboardSignal(int key, int pressed)
     }
 }
 
+//m2: catch keyboard input
+void MainWindow::keyPressEvent(QKeyEvent *event)
+{
+    //qDebug("GVADemo keyPressEvent %d", event->key());
+    // ALT key on PC keyboard => stop all
+    if (event->key() == 16777251)
+        this->stopSlots();
+}
+
 // m2: pause or continue all running titles
 void MainWindow::pauseSlots()
 {
@@ -695,9 +704,9 @@ int MainWindow::getCurrentLayer() {
 
 // m2:
 int MainWindow::getSlotLayer(int slotNo) {
-    // Layer number 1-based
+    // Layer number 1-based, slot number 1-based
     //qDebug() << QString("Slot is in layer: %1").arg((int)(slotNo / this->getLayerNumberOfSlots()) + 1);
-    return ((int)(slotNo / this->getLayerNumberOfSlots()) + 1);
+    return ((int)((slotNo - 1) / this->getLayerNumberOfSlots()) + 1);
 }
 
 // m2:

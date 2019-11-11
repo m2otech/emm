@@ -92,6 +92,9 @@ public:
 
     SlotStoreDialog* ssdGlobalThread;
 
+    int getSlotLayer(int);
+    int getCurrentLayer();
+
 protected:
     void wheelEvent(QWheelEvent *);
 
@@ -111,6 +114,8 @@ private:
     SlotStoreDialog* ssdGlobal;
 
     void closeEvent (QCloseEvent *);
+
+    void keyPressEvent(QKeyEvent *);
 
 private slots:
     void showConfigDialog();
@@ -141,8 +146,6 @@ private slots:
     void resetPitches(bool);
     int getLayerFirstSlotId();
     int getLayerNumberOfSlots();
-    int getCurrentLayer();
-    int getSlotLayer(int);
 
     // m2: reset all slot counters to 0
     void resetCounters(bool);

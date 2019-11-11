@@ -49,7 +49,7 @@
         <bool>true</bool>
        </property>
        <property name="selectionMode">
-        <enum>QAbstractItemView::SingleSelection</enum>
+        <enum>QAbstractItemView::ExtendedSelection</enum>
        </property>
        <property name="selectionBehavior">
         <enum>QAbstractItemView::SelectRows</enum>
@@ -64,7 +64,7 @@
         <bool>false</bool>
        </attribute>
        <attribute name="verticalHeaderDefaultSectionSize">
-        <number>20</number>
+        <number>23</number>
        </attribute>
       </widget>
      </item>

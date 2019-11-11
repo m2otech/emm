@@ -320,22 +320,55 @@ void CartSlotWidget::updateSlotCounter(int newValue)
 void CartSlotWidget::dragEnterEvent(QDragEnterEvent *e)
 {
     if (e->mimeData()->formats().contains("application/emm.store.objectid") ||
-        e->mimeData()->formats().contains("application/emm.store.slotid"))
+        e->mimeData()->formats().contains("application/emm.store.slotid") ||
+        e->mimeData()->hasUrls())
         e->acceptProposedAction();
 }
 
 void CartSlotWidget::dragMoveEvent(QDragMoveEvent *e)
 {
     if (e->mimeData()->formats().contains("application/emm.store.objectid") ||
-        e->mimeData()->formats().contains("application/emm.store.slotid"))
+        e->mimeData()->formats().contains("application/emm.store.slotid") ||
+        e->mimeData()->hasUrls())
         e->accept();
 }
 
 void CartSlotWidget::dropEvent(QDropEvent *e)
 {
-    if (e->mimeData()->formats().contains("application/emm.store.objectid") && e->proposedAction() == Qt::CopyAction) {
-        int id = QString(e->mimeData()->data("application/emm.store.objectid")).toInt();
+    //if (e->mimeData()->formats().contains("application/emm.store.objectid") && e->proposedAction() == Qt::CopyAction) {
+    if ( (e->mimeData()->formats().contains("application/emm.store.objectid") || e->mimeData()->hasUrls()) && e->proposedAction() == Qt::CopyAction) {
+        //m2: importing id via URLs MimeType now instead (filled in slottablemodel.cpp)
+        //int id = QString(e->mimeData()->data("application/emm.store.objectid")).toInt();
+
+        QList<QUrl> urls = e->mimeData()->urls();
+
+        // first title from the selection -> drop it on the selected slot
+        int id = urls.first().toString().toInt();
+
         slot->loadFromDatabase(id);
+
+        slot->pause();
+
+        // slot number where the selection was dropped
+        int dropped_number = slot->getNumber();
+
+        // other titles from the selection -> drop them on subsequent slots
+        if (urls.size() > 1)
+        {
+            for (int i=1; i<urls.size(); i++)
+            {
+                id = urls.at(i).toString().toInt();
+                if (MainWindow::getInstance()->getSlotLayer(dropped_number + i) == MainWindow::getInstance()->getCurrentLayer())
+                {
+                    // create an instance of the next slot
+                    CartSlotWidget *slotWidget = new CartSlotWidget(dropped_number + i, this);
+                    slotWidget->slot->loadFromDatabase(id);
+                }
+            }
+            MainWindow::getInstance()->updateSlotAssignment();
+        }
+
+      //m2: dropping/copying from one slot to another (leaving this alone...)
     } else if (e->mimeData()->formats().contains("application/emm.store.slotid") && e->proposedAction() == Qt::CopyAction) {
         int id = QString(e->mimeData()->data("application/emm.store.slotid")).toInt();
         slot->loadFromSlot(id);

@@ -356,6 +356,9 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
     // ALT key on PC keyboard => stop all
     if (event->key() == 16777251)
         this->stopSlots();
+    // CTRL key on PC keyboard => pause all
+    else if (event->key() == 16777249)
+        this->pauseSlots();
 }
 
 // m2: pause or continue all running titles

@@ -353,11 +353,11 @@ void MainWindow::keyboardSignal(int key, int pressed)
 void MainWindow::keyPressEvent(QKeyEvent *event)
 {
     //qDebug("GVADemo keyPressEvent %d", event->key());
-    // ALT key on PC keyboard => stop all
-    if (event->key() == 16777251)
+    // CTRL key on PC keyboard => stop all
+    if (event->key() == 16777249)
         this->stopSlots();
-    // CTRL key on PC keyboard => pause all
-    else if (event->key() == 16777249)
+    // ALT key on PC keyboard => pause all
+    else if (event->key() == 16777251)
         this->pauseSlots();
 }
 

@@ -95,6 +95,8 @@ public:
     int getSlotLayer(int);
     int getCurrentLayer();
 
+    bool getNightMode();
+
 protected:
     void wheelEvent(QWheelEvent *);
 
@@ -104,6 +106,8 @@ private:
     QFileSystemModel *fileModel;
     LoadSlotThread *slotThread;
     bool pauseModifier;
+
+    bool nightMode;
 
     // m2: added to hold state variables
     static MainWindow* instance;
@@ -155,6 +159,8 @@ private slots:
 
     void showPlayer();
     void showSlots();
+
+    void switchNightMode();
 
 public slots:
     void updateSlotAssignment();

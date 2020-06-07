@@ -134,6 +134,8 @@ void CartSlotWidget::showInfo()
 
 void CartSlotWidget::setColor(bool blink)
 {
+    bool nightMode = MainWindow::getInstance()->getNightMode();
+
     QString color,fontColor;
     if (blink) {
         color = this->blinkColor;
@@ -142,6 +144,15 @@ void CartSlotWidget::setColor(bool blink)
         color = this->normalColor;
         fontColor = this->normalFontColor;
     }
+
+    // m2: Set both text/background to black if night mode is on (only affects free slots)
+    if ( nightMode && this->slot->getText1().isEmpty() ) {
+        color = "#000000";
+        fontColor = "#000000";
+
+
+    }
+
     QPalette p(ui->contentWidget->palette());
     p.setColor(QPalette::Background, QColor(color));
     ui->contentWidget->setPalette(p);

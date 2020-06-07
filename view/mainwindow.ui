@@ -845,7 +845,6 @@ font-weight:bold;</string>
      <string>Datei</string>
     </property>
     <addaction name="configAction"/>
-    <addaction name="slotStoreAction"/>
     <addaction name="setConfigurationAction"/>
    </widget>
    <widget class="QMenu" name="menu">
@@ -862,6 +861,8 @@ font-weight:bold;</string>
     <addaction name="clearLayerAction"/>
     <addaction name="resetCountersAction"/>
     <addaction name="resetPitchesAction"/>
+    <addaction name="slotStoreAction"/>
+    <addaction name="switchToNight"/>
    </widget>
    <addaction name="fileMenu"/>
    <addaction name="menuDiverses"/>
@@ -882,6 +883,10 @@ font-weight:bold;</string>
    </property>
   </action>
   <action name="aboutAction">
+   <property name="icon">
+    <iconset resource="icons.qrc">
+     <normaloff>:/icons/splash.png</normaloff>:/icons/splash.png</iconset>
+   </property>
    <property name="text">
     <string>Über die Event Music Machine</string>
    </property>
@@ -916,30 +921,50 @@ font-weight:bold;</string>
      <normaloff>:/icons/server_components.png</normaloff>:/icons/server_components.png</iconset>
    </property>
    <property name="text">
-    <string>Slot-Store</string>
+    <string>Slot-Store öffnen</string>
    </property>
   </action>
   <action name="colorAction">
+   <property name="icon">
+    <iconset resource="icons.qrc">
+     <normaloff>:/icons/document_page_next.png</normaloff>:/icons/document_page_next.png</iconset>
+   </property>
    <property name="text">
     <string>Farben dieses Layers auf alle anderen übertragen</string>
    </property>
   </action>
   <action name="clearLayerAction">
+   <property name="icon">
+    <iconset resource="icons.qrc">
+     <normaloff>:/icons/delete.png</normaloff>:/icons/delete.png</iconset>
+   </property>
    <property name="text">
     <string>Alle Slots in diesem Layer löschen</string>
    </property>
   </action>
   <action name="setConfigurationAction">
+   <property name="icon">
+    <iconset resource="icons.qrc">
+     <normaloff>:/icons/folder.png</normaloff>:/icons/folder.png</iconset>
+   </property>
    <property name="text">
     <string>Konfiguration wechseln</string>
    </property>
   </action>
   <action name="resetCountersAction">
+   <property name="icon">
+    <iconset resource="icons.qrc">
+     <normaloff>:/icons/timeline_marker.png</normaloff>:/icons/timeline_marker.png</iconset>
+   </property>
    <property name="text">
     <string>Alle Slot-Zähler in diesem Layer zurücksetzen</string>
    </property>
   </action>
   <action name="resetPitchesAction">
+   <property name="icon">
+    <iconset resource="icons.qrc">
+     <normaloff>:/icons/timeline_marker.png</normaloff>:/icons/timeline_marker.png</iconset>
+   </property>
    <property name="text">
     <string>Pitch bei allen Slots in diesem Layer zurücksetzen</string>
    </property>
@@ -947,6 +972,15 @@ font-weight:bold;</string>
   <action name="resetVolumesAction">
    <property name="text">
     <string>Lautstärke bei allen Slots in diesem Layer zurücksetzen</string>
+   </property>
+  </action>
+  <action name="switchToNight">
+   <property name="icon">
+    <iconset resource="icons.qrc">
+     <normaloff>:/icons/arrow_switch.png</normaloff>:/icons/arrow_switch.png</iconset>
+   </property>
+   <property name="text">
+    <string>Zum Nacht-Modus wechseln</string>
    </property>
   </action>
  </widget>

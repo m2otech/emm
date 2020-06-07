@@ -78,8 +78,13 @@ MainWindow::~MainWindow()
 void MainWindow::init() {
     ui->setupUi(this);
 
+    // m2: Hide unused section from playlist view
+    ui->fileView->setVisible(false);
+
     Globals *globals = new Globals();
     this->setWindowTitle("Event Music Machine " + globals->getVersion());
+
+    nightMode = false;
 
     // m2: Point MainWindow::instance to correct location after initializing UI
     this->instance = this;
@@ -146,6 +151,9 @@ void MainWindow::init() {
 
     connect(ui->switchToPlayer, SIGNAL(clicked()), this, SLOT(showPlayer()));
     connect(ui->switchToSlots, SIGNAL(clicked()), this, SLOT(showSlots()));
+
+    // m2: menu item for switching day/night mode
+    connect(ui->switchToNight, SIGNAL(triggered()), this, SLOT(switchNightMode()));
 
     // m2: Slot-Store popup
     ssdGlobal = new SlotStoreDialog(this);
@@ -917,4 +925,49 @@ void MainWindow::renameSlotsFilename(QString replaceWhat, QString replaceWith)
 void MainWindow::ssdGlobalDelete()
 {
     ssdGlobal = NULL;
+}
+
+void MainWindow::switchNightMode()
+{
+    this->nightMode = !(nightMode);
+    this->createPlayers();
+
+    QString colorStr;
+
+    if (nightMode) {
+        ui->switchToNight->setText("Zum Tag-Modus wechseln");
+
+        // Set to dark mode
+        colorStr = QString("QMenuBar::item{background-color: black; color: white} QMenuBar{background-color: black}");
+        ui->menuBar->setStyleSheet(colorStr);
+
+        // TODO Style the header section (not realy working as expected, the font-size is ignored and the colours are not right
+        colorStr = QString("PlaylistWidget::QHeaderView::section{background-color: black; color: white; font-size: 20px;} PlaylistWidget{background-color: black; color: white; font-size:20px;}");
+        ui->playListTable->setStyleSheet(colorStr);
+        colorStr = QString("background-color: black; color: white;");
+    }
+    else {
+        ui->switchToNight->setText("Zum Nacht-Modus wechseln");
+
+        // Set to normal mode
+        colorStr = QString("font-size: 20px;");
+        ui->playListTable->setStyleSheet(colorStr);
+
+        colorStr = QString("");
+        ui->menuBar->setStyleSheet(colorStr);
+    }
+
+    // Set to dark/normal mode
+    ui->fileMenu->setStyleSheet(colorStr);
+    ui->menu->setStyleSheet(colorStr);
+    ui->menuDiverses->setStyleSheet(colorStr);
+    ui->infoBox->setStyleSheet(colorStr);
+    ui->historyList->setStyleSheet(colorStr);
+
+    this->repaint();
+}
+
+bool MainWindow::getNightMode()
+{
+    return this->nightMode;
 }

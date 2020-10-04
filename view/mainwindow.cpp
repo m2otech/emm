@@ -930,7 +930,6 @@ void MainWindow::ssdGlobalDelete()
 void MainWindow::switchNightMode()
 {
     this->nightMode = !(nightMode);
-    this->createPlayers();
 
     QString colorStr;
 
@@ -941,7 +940,7 @@ void MainWindow::switchNightMode()
         colorStr = QString("QMenuBar::item{background-color: black; color: white} QMenuBar{background-color: black}");
         ui->menuBar->setStyleSheet(colorStr);
 
-        // TODO Style the header section (not realy working as expected, the font-size is ignored and the colours are not right
+        // TODO Style the header section (not really working as expected, the font-size is ignored and the colours are not right in PlaylistWidget::QHeaderView::section
         colorStr = QString("PlaylistWidget::QHeaderView::section{background-color: black; color: white; font-size: 20px;} PlaylistWidget{background-color: black; color: white; font-size:20px;}");
         ui->playListTable->setStyleSheet(colorStr);
         colorStr = QString("background-color: black; color: white;");
@@ -964,7 +963,14 @@ void MainWindow::switchNightMode()
     ui->infoBox->setStyleSheet(colorStr);
     ui->historyList->setStyleSheet(colorStr);
 
-    this->repaint();
+    // Seems not necessary
+    //this->repaint();
+
+    // m2: This created problems with playlist (reset) => use updateSlots() instead
+    //this->createPlayers();
+
+    int currentLayer = ui->layerSelector->getSelectedButton();
+    ui->slotTableWidget->updateSlots(currentLayer);
 }
 
 bool MainWindow::getNightMode()

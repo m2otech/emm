@@ -28,5 +28,7 @@
         <file>icons/mixer.png</file>
         <file>icons/control_pause_blue.png</file>
         <file>icons/warning.png</file>
+        <file>icons/control_play_blue_big.png</file>
+        <file>icons/control_stop_blue_big.png</file>
     </qresource>
 </RCC>

@@ -80,6 +80,10 @@ ConfigurationDialog::ConfigurationDialog(QWidget *parent) :
     }
     layerItem->setExpanded(true);
     connect(ui->layerSpinBox, SIGNAL(valueChanged(int)), this, SLOT(updateLayerCount(int)));
+
+    // m2: Layer add/remove buttons
+    connect(ui->layerAddButton, SIGNAL(clicked()), this, SLOT(increaseLayerCount()));
+    connect(ui->layerRemoveButton, SIGNAL(clicked()), this, SLOT(decreaseLayerCount()));
 }
 
 ConfigurationDialog::~ConfigurationDialog()
@@ -154,6 +158,14 @@ void ConfigurationDialog::selectionChanged() {
             ui->layerStack->setCurrentIndex(0);
     }
     ui->mainWindget->setCurrentIndex(index);
+}
+
+void ConfigurationDialog::increaseLayerCount() {
+    ui->layerSpinBox->setValue(ui->layerSpinBox->value() + 1);
+}
+
+void ConfigurationDialog::decreaseLayerCount() {
+    ui->layerSpinBox->setValue(ui->layerSpinBox->value() - 1);
 }
 
 void ConfigurationDialog::updateLayerCount(int count) {

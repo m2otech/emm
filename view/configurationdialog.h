@@ -44,6 +44,9 @@ private slots:
     void updateLayerEnabled(bool);
     void updateLayerName(QString);
     void showRestartWarning(bool);
+
+    void increaseLayerCount();
+    void decreaseLayerCount();
 };
 
 #endif // CONFIGURATIONDIALOG_H

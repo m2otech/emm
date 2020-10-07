@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>524</width>
+    <width>594</width>
     <height>363</height>
    </rect>
   </property>
@@ -14,14 +14,60 @@
    <string>Einstellungen</string>
   </property>
   <layout class="QGridLayout" name="gridLayout_3">
-   <item row="1" column="1">
+   <item row="0" column="0" rowspan="3">
+    <widget class="QTreeWidget" name="menuTree">
+     <property name="minimumSize">
+      <size>
+       <width>150</width>
+       <height>0</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>150</width>
+       <height>16777215</height>
+      </size>
+     </property>
+     <column>
+      <property name="text">
+       <string>Menü</string>
+      </property>
+     </column>
+     <item>
+      <property name="text">
+       <string>Slots</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Layer/Layerbar</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Playlist</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>PFL</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Standardsoundkarte</string>
+      </property>
+     </item>
+    </widget>
+   </item>
+   <item row="2" column="1">
     <widget class="QDialogButtonBox" name="buttonBox">
      <property name="standardButtons">
       <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
      </property>
     </widget>
    </item>
-   <item row="0" column="1">
+   <item row="1" column="1">
     <widget class="QStackedWidget" name="mainWindget">
      <property name="currentIndex">
       <number>0</number>
@@ -250,7 +296,14 @@
               <property name="bottomMargin">
                <number>0</number>
               </property>
-              <item row="0" column="2">
+              <item row="2" column="0">
+               <widget class="QLabel" name="label_10">
+                <property name="text">
+                 <string>Preh-Tastatur:</string>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="6">
                <spacer name="horizontalSpacer_3">
                 <property name="orientation">
                  <enum>Qt::Horizontal</enum>
@@ -262,40 +315,6 @@
                  </size>
                 </property>
                </spacer>
-              </item>
-              <item row="0" column="1">
-               <widget class="QSpinBox" name="layerSpinBox">
-                <property name="minimum">
-                 <number>1</number>
-                </property>
-               </widget>
-              </item>
-              <item row="1" column="0" colspan="3">
-               <widget class="QCheckBox" name="keyboardSyncCheckBox">
-                <property name="text">
-                 <string>Tastatur steuert immer aktuellen Layer</string>
-                </property>
-               </widget>
-              </item>
-              <item row="5" column="0" colspan="3">
-               <spacer name="verticalSpacer_5">
-                <property name="orientation">
-                 <enum>Qt::Vertical</enum>
-                </property>
-                <property name="sizeHint" stdset="0">
-                 <size>
-                  <width>20</width>
-                  <height>40</height>
-                 </size>
-                </property>
-               </spacer>
-              </item>
-              <item row="0" column="0">
-               <widget class="QLabel" name="label_7">
-                <property name="text">
-                 <string>Anzahl:</string>
-                </property>
-               </widget>
               </item>
               <item row="3" column="0" colspan="2">
                <widget class="QComboBox" name="keyboardSyncComboBox">
@@ -317,10 +336,10 @@
                 </item>
                </widget>
               </item>
-              <item row="2" column="0">
-               <widget class="QLabel" name="label_10">
+              <item row="1" column="0" colspan="7">
+               <widget class="QCheckBox" name="keyboardSyncCheckBox">
                 <property name="text">
-                 <string>Preh-Tastatur:</string>
+                 <string>Tastatur steuert immer aktuellen Layer</string>
                 </property>
                </widget>
               </item>
@@ -328,6 +347,56 @@
                <widget class="QCheckBox" name="keyboardPitchCheckBox">
                 <property name="text">
                  <string>Pitch über Tastatur steuerbar</string>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="0">
+               <widget class="QLabel" name="label_7">
+                <property name="text">
+                 <string>Anzahl:</string>
+                </property>
+               </widget>
+              </item>
+              <item row="5" column="0" colspan="7">
+               <spacer name="verticalSpacer_5">
+                <property name="orientation">
+                 <enum>Qt::Vertical</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>20</width>
+                  <height>40</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+              <item row="0" column="3">
+               <widget class="QSpinBox" name="layerSpinBox">
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+                <property name="readOnly">
+                 <bool>true</bool>
+                </property>
+                <property name="buttonSymbols">
+                 <enum>QAbstractSpinBox::NoButtons</enum>
+                </property>
+                <property name="minimum">
+                 <number>1</number>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="4">
+               <widget class="QPushButton" name="layerAddButton">
+                <property name="text">
+                 <string>+</string>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="2">
+               <widget class="QPushButton" name="layerRemoveButton">
+                <property name="text">
+                 <string>-</string>
                 </property>
                </widget>
               </item>
@@ -652,52 +721,6 @@
        </item>
       </layout>
      </widget>
-    </widget>
-   </item>
-   <item row="0" column="0" rowspan="2">
-    <widget class="QTreeWidget" name="menuTree">
-     <property name="minimumSize">
-      <size>
-       <width>150</width>
-       <height>0</height>
-      </size>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>150</width>
-       <height>16777215</height>
-      </size>
-     </property>
-     <column>
-      <property name="text">
-       <string>Menü</string>
-      </property>
-     </column>
-     <item>
-      <property name="text">
-       <string>Slots</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>Layer/Layerbar</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>Playlist</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>PFL</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>Standardsoundkarte</string>
-      </property>
-     </item>
     </widget>
    </item>
   </layout>

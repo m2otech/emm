@@ -121,6 +121,8 @@ private:
 
     void keyPressEvent(QKeyEvent *);
 
+    void exportTitles(int);
+
 private slots:
     void showConfigDialog();
     void showErrorMessage(QString);
@@ -154,6 +156,9 @@ private slots:
     // m2: reset all slot counters to 0
     void resetCounters(bool);
     void resetCounters();
+
+    void exportLayerTitles();
+    void exportAllTitles();
 
     void gotoLayer(int);
 

@@ -863,6 +863,8 @@ font-weight:bold;</string>
     <addaction name="resetPitchesAction"/>
     <addaction name="slotStoreAction"/>
     <addaction name="switchToNight"/>
+    <addaction name="exportTitlesAction"/>
+    <addaction name="exportTitlesAllLayersAction"/>
    </widget>
    <addaction name="fileMenu"/>
    <addaction name="menuDiverses"/>
@@ -981,6 +983,16 @@ font-weight:bold;</string>
    </property>
    <property name="text">
     <string>Zum Nacht-Modus wechseln</string>
+   </property>
+  </action>
+  <action name="exportTitlesAction">
+   <property name="text">
+    <string>Titel-Liste exportieren (Layer)</string>
+   </property>
+  </action>
+  <action name="exportTitlesAllLayersAction">
+   <property name="text">
+    <string>Titel-Liste exportieren (alle Layer)</string>
    </property>
   </action>
  </widget>

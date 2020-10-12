@@ -84,7 +84,8 @@ SOURCES += main.cpp\
     model/resetpitchesthread.cpp \
     model/slotstoreimportthread.cpp \
     view/slotstorerenamedialog.cpp \
-    globals.cpp
+    globals.cpp \
+    model/exporttitlesthread.cpp
 
 
 HEADERS += view/mainwindow.h \
@@ -131,7 +132,9 @@ HEADERS += view/mainwindow.h \
     model/slotstoreimportthread.h \
     view/slotstorerenamedialog.h \
     config.h \
-    globals.h
+    globals.h \
+    model/resetpitchesthread.h \
+    model/exporttitlesthread.h
 
 
 FORMS += view/mainwindow.ui \

@@ -84,6 +84,12 @@ ConfigurationDialog::ConfigurationDialog(QWidget *parent) :
     // m2: Layer add/remove buttons
     connect(ui->layerAddButton, SIGNAL(clicked()), this, SLOT(increaseLayerCount()));
     connect(ui->layerRemoveButton, SIGNAL(clicked()), this, SLOT(decreaseLayerCount()));
+
+    connect(ui->showPauseButtonCheckBox, SIGNAL(clicked(bool)), this, SLOT(showRestartWarning(bool)));
+    connect(ui->showPitchControlCheckBox, SIGNAL(clicked(bool)), this, SLOT(showRestartWarning(bool)));
+    connect(ui->showPlaylistButtonCheckBox, SIGNAL(clicked(bool)), this, SLOT(showRestartWarning(bool)));
+    connect(ui->showRLACheckBox, SIGNAL(clicked(bool)), this, SLOT(showRestartWarning(bool)));
+    connect(ui->showStopButtonCheckBox, SIGNAL(clicked(bool)), this, SLOT(showRestartWarning(bool)));
 }
 
 ConfigurationDialog::~ConfigurationDialog()
@@ -137,6 +143,7 @@ void ConfigurationDialog::selectionChanged() {
     int index = ui->menuTree->indexOfTopLevelItem(ui->menuTree->selectedItems().at(0));
     if (index == -1) {
         index = ui->menuTree->indexOfTopLevelItem(ui->menuTree->selectedItems().at(0)->parent());
+        // Submenu under Layer selected
         if (index == 1) {
             ui->layerStack->setCurrentIndex(1);
             layerId = ui->menuTree->currentIndex().row();
@@ -147,15 +154,28 @@ void ConfigurationDialog::selectionChanged() {
             ui->visibleCheckBox->setChecked(config->getLayers().value(layerId)->getVisible());
             connect(ui->layerNameText, SIGNAL(textChanged(QString)), this, SLOT(updateLayerName(QString)));
             connect(ui->visibleCheckBox, SIGNAL(clicked(bool)), this, SLOT(updateLayerEnabled(bool)));
-            connect(ui->showPauseButtonCheckBox, SIGNAL(clicked(bool)), this, SLOT(showRestartWarning(bool)));
-            connect(ui->showPitchControlCheckBox, SIGNAL(clicked(bool)), this, SLOT(showRestartWarning(bool)));
-            connect(ui->showPlaylistButtonCheckBox, SIGNAL(clicked(bool)), this, SLOT(showRestartWarning(bool)));
-            connect(ui->showRLACheckBox, SIGNAL(clicked(bool)), this, SLOT(showRestartWarning(bool)));
-            connect(ui->showStopButtonCheckBox, SIGNAL(clicked(bool)), this, SLOT(showRestartWarning(bool)));
+
+            // Show general layer settings only when general layer tab is shown
+            ui->label_13->setVisible(false);
+            ui->showPauseButtonCheckBox->setVisible(false);
+            ui->showPitchControlCheckBox->setVisible(false);
+            ui->showPlaylistButtonCheckBox->setVisible(false);
+            ui->showRLACheckBox->setVisible(false);
+            ui->showStopButtonCheckBox->setVisible(false);
         }
     } else {
-        if (index == 1)
+        // Main menu Layer selected
+        if (index == 1) {
             ui->layerStack->setCurrentIndex(0);
+
+            // Show general layer settings only when general layer tab is shown
+            ui->label_13->setVisible(true);
+            ui->showPauseButtonCheckBox->setVisible(true);
+            ui->showPitchControlCheckBox->setVisible(true);
+            ui->showPlaylistButtonCheckBox->setVisible(true);
+            ui->showRLACheckBox->setVisible(true);
+            ui->showStopButtonCheckBox->setVisible(true);
+        }
     }
     ui->mainWindget->setCurrentIndex(index);
 }

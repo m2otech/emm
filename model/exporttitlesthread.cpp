@@ -14,21 +14,21 @@
  * You should have received a copy of the GNU General Public License
  * along with Event Music Machine. If not, see <http://www.gnu.org/licenses/>.
  * ************************************************************************* */
+#include <QDateTime>
 
 #include "exporttitlesthread.h"
 #include "model/audio/cartslot.h"
 #include "model/configuration.h"
+#include "model/layerdata.h"
 #include "view/cartslotwidget.h"
 
 #include "view/mainwindow.h"
 
-ExportTitlesThread::ExportTitlesThread(int selectedLayer, QObject *parent) :
+ExportTitlesThread::ExportTitlesThread(QList<int> layers, QString exportDir, QObject *parent) :
     QThread(parent)
 {
-    this->selectedLayer = selectedLayer;
-    // selectedLayer >= 0 => current layer
-    // selectedLayer = -1 => all layers
-    // selectedLayer = -2 => slot store (TODO)
+    this->exportLayers = layers;
+    this->exportDir = exportDir;
 }
 
 void ExportTitlesThread::run() {
@@ -36,80 +36,79 @@ void ExportTitlesThread::run() {
     Configuration *config = Configuration::getInstance();
 
     int slotsPerLayer = config->getVerticalSlots()*config->getHorizontalSlots();
-    int numberOfLayers = config->getLayers().count();
 
     // FILE TO EXPORT TO
-    // TODO make file selectable
-    QString filename;
+    QString filename = exportDir + "/export" + QDateTime::currentDateTime().toString("_yyyyMMdd_hhmmss") + ".txt";
 
-    int number, minus;
-    if (selectedLayer >= 0)
-    {
-        // m2: added +1 since function is 1-based
-        number = slotsPerLayer * selectedLayer + 1;
-        minus = number;
-        numberOfLayers = 1;
-        filename = "export_layer_" + QString("%1").arg(selectedLayer + 1) + ".txt";
-        emit updateMax(slotsPerLayer);
-    }
-    else if (selectedLayer == -1)
-    {
-        number = 1;
-        minus = number;
-        filename = "export_layer_ALL.txt";;
-        emit updateMax(slotsPerLayer * numberOfLayers);
-    }
+    QList<int> startingNumber;
+
+    int number = 0;
+
+    for (int i = 0; i < exportLayers.count(); i++)
+        startingNumber.append((exportLayers.at(i) - 1) * slotsPerLayer + 1);
+
+    emit updateMin(startingNumber.first());
+    emit updateMax(startingNumber.last() + slotsPerLayer);
 
     // Remove file if existing (OVERWRITE)
     QFile file(filename);
     file.remove(filename);
 
-    //for (int i = 0; i < config->getVerticalSlots(); i++)
-    for (int i = 0; i < numberOfLayers; i++)
+    for (int i = 0; i < exportLayers.count(); i++)
     {
-        //for (int j = 0; j < config->getHorizontalSlots(); j++)
+       number = startingNumber.at(i);
+
+        // OPEN STREAM TO FILE
+        if ( !file.open(QIODevice::Append) )
+            return;
+
+        QTextStream stream( &file );
+
         for (int j = 0; j < slotsPerLayer; j++)
         {
             CartSlot *slot = CartSlot::getObjectWithNumber(number);
-            MainWindow *win = MainWindow::getInstance();
-            // m2: this happens inside empty() now
-            // slot->clearColor();
-            slot->loadFromSlot(number);
-
-            // TITLE
-            QString title = slot->getText1();
-
-            // ARTIST
-            // QString filename = slot->getFileName();
-            // QFile file(filename);
-            // TODO extract artist from MP3
-
-            // TOTAL TIME
-            double pos2 = slot->getLength();
-            int mins2 = (int)pos2/60;
-            int secs2 = (int)floor(pos2-mins2*60);
-            int msecs2 = (int)floor((pos2-mins2*60-secs2)*10);
-            QString totaltime = QString("%1:%2").arg(mins2,2, 10, QChar('0')).arg(secs2,2,10, QChar('0'));
-
-            // START TIME
-            pos2 = slot->getStartPos();
-            mins2 = (int)pos2/60;
-            secs2 = (int)floor(pos2-mins2*60);
-            msecs2 = (int)floor((pos2-mins2*60-secs2)*1000);
-            QString starttime = QString("%1:%2.%3").arg(mins2,2, 10, QChar('0')).arg(secs2,2,10, QChar('0')).arg(msecs2, 3, 10, QChar('0'));
-
-            QString writeline = title + '\t' + starttime + '\t' + totaltime;
-
-            if ( file.open(QIODevice::Append) )
+            if (slot->getFileName() != "")
             {
-                QTextStream stream( &file );
-                stream << writeline << endl;
-                file.close();
-            }
+               slot->loadFromSlot(number);
 
+                // LAYER
+                QString layer = config->getLayers().value(exportLayers.at(i) - 1)->getName();
+
+                // TITLE
+                QString title = slot->getText1();
+
+                // ARTIST
+                // QString filename = slot->getFileName();
+                // QFile file(filename);
+                // TODO extract artist from MP3
+
+                // TOTAL TIME
+                double pos2 = slot->getLength();
+                int mins2 = (int)pos2/60;
+                int secs2 = (int)floor(pos2-mins2*60);
+                int msecs2 = (int)floor((pos2-mins2*60-secs2)*10);
+                QString totaltime = QString("%1:%2").arg(mins2,2, 10, QChar('0')).arg(secs2,2,10, QChar('0'));
+
+                // START TIME
+                pos2 = slot->getStartPos();
+                mins2 = (int)pos2/60;
+                secs2 = (int)floor(pos2-mins2*60);
+                msecs2 = (int)floor((pos2-mins2*60-secs2)*1000);
+                QString starttime = QString("%1:%2.%3").arg(mins2,2, 10, QChar('0')).arg(secs2,2,10, QChar('0')).arg(msecs2, 3, 10, QChar('0'));
+
+                QString writeline = layer + '\t' + title + '\t' + starttime + '\t' + totaltime;
+
+                // Write to file
+                stream << writeline << endl;
+           }
             number++;
-            emit updateStatus(number-minus);
+            emit updateStatus(number);
         }
+        file.close();
     }
+}
+
+void ExportTitlesThread::quit() {
+    // TODO Find a way to interrupt the run thread and return cleanly (close file, ...)
 }
 

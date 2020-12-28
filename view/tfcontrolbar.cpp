@@ -60,7 +60,7 @@ TFControlBar::TFControlBar(QWidget *parent) :
     renameButton->setIcon(QIcon(":/icons/server_components.png"));
 
     Globals *globals = new Globals();
-    renameButton->setVisible(globals->isRV());
+    renameButton->setVisible(globals->isPLUS());
 
     spacer = new QSpacerItem(0,0,QSizePolicy::Expanding);
 

@@ -632,10 +632,10 @@
                <attribute name="verticalHeaderVisible">
                 <bool>false</bool>
                </attribute>
-               <attribute name="verticalHeaderDefaultSectionSize">
+               <attribute name="verticalHeaderMinimumSectionSize">
                 <number>40</number>
                </attribute>
-               <attribute name="verticalHeaderMinimumSectionSize">
+               <attribute name="verticalHeaderDefaultSectionSize">
                 <number>40</number>
                </attribute>
               </widget>
@@ -857,16 +857,22 @@ font-weight:bold;</string>
     <property name="title">
      <string>Tools</string>
     </property>
+    <addaction name="slotStoreAction"/>
+    <addaction name="switchToNight"/>
+    <addaction name="exportTitlesAction"/>
+   </widget>
+   <widget class="QMenu" name="menuLayer_2">
+    <property name="title">
+     <string>Layer</string>
+    </property>
     <addaction name="colorAction"/>
     <addaction name="clearLayerAction"/>
     <addaction name="resetCountersAction"/>
     <addaction name="resetPitchesAction"/>
-    <addaction name="slotStoreAction"/>
-    <addaction name="switchToNight"/>
-    <addaction name="exportTitlesAction"/>
-    <addaction name="exportTitlesAllLayersAction"/>
+    <addaction name="separator"/>
    </widget>
    <addaction name="fileMenu"/>
+   <addaction name="menuLayer_2"/>
    <addaction name="menuDiverses"/>
    <addaction name="menu"/>
   </widget>
@@ -926,7 +932,7 @@ font-weight:bold;</string>
     <string>Slot-Store öffnen</string>
    </property>
   </action>
-  <action name="colorAction">
+  <action name="colorAction_OLD">
    <property name="icon">
     <iconset resource="icons.qrc">
      <normaloff>:/icons/document_page_next.png</normaloff>:/icons/document_page_next.png</iconset>
@@ -935,7 +941,7 @@ font-weight:bold;</string>
     <string>Farben dieses Layers auf alle anderen übertragen</string>
    </property>
   </action>
-  <action name="clearLayerAction">
+  <action name="clearLayerAction_OLD">
    <property name="icon">
     <iconset resource="icons.qrc">
      <normaloff>:/icons/delete.png</normaloff>:/icons/delete.png</iconset>
@@ -953,7 +959,7 @@ font-weight:bold;</string>
     <string>Konfiguration wechseln</string>
    </property>
   </action>
-  <action name="resetCountersAction">
+  <action name="resetCountersAction_OLD">
    <property name="icon">
     <iconset resource="icons.qrc">
      <normaloff>:/icons/timeline_marker.png</normaloff>:/icons/timeline_marker.png</iconset>
@@ -962,7 +968,7 @@ font-weight:bold;</string>
     <string>Alle Slot-Zähler in diesem Layer zurücksetzen</string>
    </property>
   </action>
-  <action name="resetPitchesAction">
+  <action name="resetPitchesAction_OLD">
    <property name="icon">
     <iconset resource="icons.qrc">
      <normaloff>:/icons/timeline_marker.png</normaloff>:/icons/timeline_marker.png</iconset>
@@ -985,12 +991,71 @@ font-weight:bold;</string>
     <string>Zum Nacht-Modus wechseln</string>
    </property>
   </action>
-  <action name="exportTitlesAction">
+  <action name="exportTitlesAction_OLD">
    <property name="text">
     <string>Titel-Liste exportieren (Layer)</string>
    </property>
   </action>
+  <action name="exportTitlesAllLayersAction_OLD">
+   <property name="text">
+    <string>Titel-Liste exportieren (alle Layer)</string>
+   </property>
+  </action>
+  <action name="actiondd">
+   <property name="text">
+    <string>dd</string>
+   </property>
+  </action>
+  <action name="colorAction">
+   <property name="icon">
+    <iconset resource="icons.qrc">
+     <normaloff>:/icons/document_page_next.png</normaloff>:/icons/document_page_next.png</iconset>
+   </property>
+   <property name="text">
+    <string>Farben dieses Layers auf alle anderen übertragen</string>
+   </property>
+  </action>
+  <action name="clearLayerAction">
+   <property name="icon">
+    <iconset resource="icons.qrc">
+     <normaloff>:/icons/delete.png</normaloff>:/icons/delete.png</iconset>
+   </property>
+   <property name="text">
+    <string>Alle Slots in diesem Layer löschen</string>
+   </property>
+  </action>
+  <action name="resetCountersAction">
+   <property name="icon">
+    <iconset resource="icons.qrc">
+     <normaloff>:/icons/small_tiles.png</normaloff>:/icons/small_tiles.png</iconset>
+   </property>
+   <property name="text">
+    <string>Alle Slot-Zähler in diesem Layer zurücksetzen</string>
+   </property>
+  </action>
+  <action name="resetPitchesAction">
+   <property name="icon">
+    <iconset resource="icons.qrc">
+     <normaloff>:/icons/mixer.png</normaloff>:/icons/mixer.png</iconset>
+   </property>
+   <property name="text">
+    <string>Pitch bei allen Slots in diesem Layer zurücksetzen</string>
+   </property>
+  </action>
+  <action name="exportTitlesAction">
+   <property name="icon">
+    <iconset resource="icons.qrc">
+     <normaloff>:/icons/save_as.png</normaloff>:/icons/save_as.png</iconset>
+   </property>
+   <property name="text">
+    <string>Titel-Liste exportieren</string>
+   </property>
+  </action>
   <action name="exportTitlesAllLayersAction">
+   <property name="icon">
+    <iconset resource="icons.qrc">
+     <normaloff>:/icons/save_as.png</normaloff>:/icons/save_as.png</iconset>
+   </property>
    <property name="text">
     <string>Titel-Liste exportieren (alle Layer)</string>
    </property>

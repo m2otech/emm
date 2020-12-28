@@ -49,6 +49,8 @@
 #include "slottablewidget.h"
 #include "ui_mainwindow.h"
 
+#include "exportlayerdialog.h"
+
 #include "../globals.h"
 
 #include "model/audio/pflplayer.h"
@@ -137,8 +139,9 @@ void MainWindow::init() {
     connect(ui->pitchUpButton, SIGNAL(clicked()), this, SLOT(pitchUp()));
     connect(ui->pitchResetButton, SIGNAL(clicked()), this, SLOT(pitchReset()));
     connect(ui->resetPitchesAction, SIGNAL(triggered()), this, SLOT(resetPitches()));
-    connect(ui->exportTitlesAction, SIGNAL(triggered()), this, SLOT(exportLayerTitles()));
-    connect(ui->exportTitlesAllLayersAction, SIGNAL(triggered()), this, SLOT(exportAllTitles()));
+
+    // m2: Export layer info
+    connect(ui->exportTitlesAction, SIGNAL(triggered()), this, SLOT(exportTitlesDialog()));
 
     // m2: Volume buttons (DISABLED IN 2.5.3)
     connect(ui->dbDownButton, SIGNAL(clicked()), this, SLOT(dbDown()));
@@ -644,37 +647,10 @@ void MainWindow::clearSlots() {
     this->resetCounters(false);
 }
 
-// m2:
-void MainWindow::exportLayerTitles()
+void MainWindow::exportTitlesDialog()
 {
-    this->exportTitles(0);
-}
-
-void MainWindow::exportAllTitles()
-{
-    this->exportTitles(1);
-}
-
-// mode: 0 = current layer, 1 = all layers, 2 = slotstore
-void MainWindow::exportTitles(int mode)
-{
-    ExportTitlesThread *clear;
-    if (mode == 0)
-        clear = new ExportTitlesThread(ui->layerSelector->getSelectedButton());
-    else
-        clear = new ExportTitlesThread(-mode);
-
-    QProgressDialog *dia = new QProgressDialog(this);
-    dia->setCancelButton(NULL);
-    dia->setLabelText(tr("Titel werden exportiert...."));
-    dia->setWindowFlags(Qt::Tool | Qt::WindowTitleHint | Qt::CustomizeWindowHint);
-    connect(clear,SIGNAL(updateStatus(int)), dia, SLOT(setValue(int)));
-    connect(clear,SIGNAL(updateMax(int)), dia, SLOT(setMaximum(int)));
-    connect(dia,SIGNAL(canceled()), clear, SLOT(quit()));
-    clear->start();
+    ExportLayerDialog *dia = new ExportLayerDialog(this);
     dia->exec();
-    //int currentLayer = ui->layerSelector->getSelectedButton();
-    //ui->slotTableWidget->updateSlots(currentLayer);
 }
 
 // m2: Function to reset all slot counters to 0

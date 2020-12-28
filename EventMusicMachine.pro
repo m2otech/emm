@@ -41,6 +41,7 @@ INCLUDEPATH += lib/header
 RC_FILE = emm.rc
 
 SOURCES += main.cpp\
+    view/exportlayerdialog.cpp \
     view/mainwindow.cpp \
     view/configurationdialog.cpp \
     model/audio/bassdevice.cpp \
@@ -95,6 +96,7 @@ HEADERS += view/mainwindow.h \
     view/editcartslotdialog.h \
     model/audio/cartslot.h \
     model/configuration.h \
+    view/exportlayerdialog.h \
     view/playlistwidget.h \
     model/playlistentry.h \
     view/playerwidget.h \
@@ -141,6 +143,7 @@ FORMS += view/mainwindow.ui \
     view/configurationdialog.ui \
     view/cartslotwidget.ui \
     view/editcartslotdialog.ui \
+    view/exportlayerdialog.ui \
     view/playerwidget.ui \
     view/editplayerdialog.ui \
     view/deviceselectwidget.ui \

@@ -16,7 +16,7 @@ public:
     ~Globals();
 
     QString getVersion();
-    bool isRV();
+    bool isPLUS();
 
 signals:
 

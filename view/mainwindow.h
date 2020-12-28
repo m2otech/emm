@@ -157,8 +157,8 @@ private slots:
     void resetCounters(bool);
     void resetCounters();
 
-    void exportLayerTitles();
-    void exportAllTitles();
+    // m2: open dialog to export layer info
+    void exportTitlesDialog();
 
     void gotoLayer(int);
 

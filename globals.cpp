@@ -23,14 +23,14 @@ QString Globals::getVersion() {
         suffix = " ALPHA";
     if (VERSION_IS_BETA)
         suffix = " BETA";
-    if (VERSION_IS_RV)
-        suffix += " RV";
+    if (VERSION_IS_PLUS)
+        suffix += " +";
 
     return QString::number(VERSION_MAJOR) + "." + QString::number(VERSION_MINOR) + suffix;
 }
 
-bool Globals::isRV() {
-    if (VERSION_IS_RV)
+bool Globals::isPLUS() {
+    if (VERSION_IS_PLUS)
         return true;
     else
         return false;

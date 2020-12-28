@@ -24,16 +24,20 @@ class ExportTitlesThread : public QThread
 {
     Q_OBJECT
 public:
-    explicit ExportTitlesThread(int selectedLayer, QObject *parent = 0);
+    explicit ExportTitlesThread(QList<int> exportLayers, QString exportDir, QObject *parent = 0);
 
 protected:
     void run();
+    void quit();
 
 private:
     int selectedLayer;
+    QList<int> exportLayers;
+    QString exportDir;
 
 signals:
     void updateMax(int);
+    void updateMin(int);
     void updateStatus(int);
 };
 

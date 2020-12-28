@@ -861,7 +861,7 @@ font-weight:bold;</string>
     <addaction name="switchToNight"/>
     <addaction name="exportTitlesAction"/>
    </widget>
-   <widget class="QMenu" name="menuLayer_2">
+   <widget class="QMenu" name="menuLayer">
     <property name="title">
      <string>Layer</string>
     </property>
@@ -872,7 +872,7 @@ font-weight:bold;</string>
     <addaction name="separator"/>
    </widget>
    <addaction name="fileMenu"/>
-   <addaction name="menuLayer_2"/>
+   <addaction name="menuLayer"/>
    <addaction name="menuDiverses"/>
    <addaction name="menu"/>
   </widget>

@@ -949,13 +949,12 @@ void MainWindow::switchNightMode()
         ui->switchToNight->setText("Zum Tag-Modus wechseln");
 
         // Set to dark mode
-        colorStr = QString("QMenuBar::item{background-color: black; color: white} QMenuBar{background-color: black}");
+        colorStr = QString("QMenuBar::item{background-color: black; color: white} QMenuBar{background-color: black} QMenuBar::item:selected{background: grey} QMenu{background-color: black; color: white} QMenu:selected{background: grey}");
         ui->menuBar->setStyleSheet(colorStr);
 
         // TODO Style the header section (not really working as expected, the font-size is ignored and the colours are not right in PlaylistWidget::QHeaderView::section
         colorStr = QString("PlaylistWidget::QHeaderView::section{background-color: black; color: white; font-size: 20px;} PlaylistWidget{background-color: black; color: white; font-size:20px;}");
         ui->playListTable->setStyleSheet(colorStr);
-        colorStr = QString("background-color: black; color: white;");
     }
     else {
         ui->switchToNight->setText("Zum Nacht-Modus wechseln");
@@ -971,6 +970,7 @@ void MainWindow::switchNightMode()
     // Set to dark/normal mode
     ui->fileMenu->setStyleSheet(colorStr);
     ui->menu->setStyleSheet(colorStr);
+    ui->menuLayer->setStyleSheet(colorStr);
     ui->menuDiverses->setStyleSheet(colorStr);
     ui->infoBox->setStyleSheet(colorStr);
     ui->historyList->setStyleSheet(colorStr);

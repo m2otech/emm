@@ -21,6 +21,7 @@
 #include <QMessageBox>
 #include <QProgressDialog>
 #include <QScrollBar>
+#include <QSettings>
 #include <math.h>
 #include "editcartslotdialog.h"
 #include "loadslotdialog.h"
@@ -103,6 +104,14 @@ EditCartSlotDialog::EditCartSlotDialog(int slotNumber,bool db, QWidget *parent) 
     // m2: On opening dialog place cursor in Title field
     ui->line1Text->setFocus();
     ui->line1Text->setCursorPosition(ui->line1Text->text().length());
+
+    // Load custom colors from config.ini
+    QColor col;
+    QSettings settings(Configuration::getStorageLocation() + "/config.ini", QSettings::IniFormat);
+    for (int i = 0; i < QColorDialog::customCount(); i++) {
+        col.setNamedColor(settings.value("CustomColors/" + QString::number(i)).toString());
+        QColorDialog::setCustomColor(i, col);
+    }
 }
 
 EditCartSlotDialog::~EditCartSlotDialog()
@@ -311,6 +320,14 @@ void EditCartSlotDialog::selectColor()
     {
         setColor(selectedColor.name());
     }
+
+    // Save custom colors to config.ini
+    QColor col;
+    QSettings settings(Configuration::getStorageLocation() + "/config.ini", QSettings::IniFormat);
+    for (int i = 0; i < QColorDialog::customCount(); i++) {
+        col = QColorDialog::customColor(i);
+        settings.setValue("CustomColors/" + QString::number(i), col.name());
+    }
 }
 
 void EditCartSlotDialog::selectFontColor()
@@ -320,6 +337,14 @@ void EditCartSlotDialog::selectFontColor()
     if (selectedColor.isValid())
     {
         setFontColor(selectedColor.name());
+    }
+
+    // Save custom colors to config.ini
+    QColor col;
+    QSettings settings(Configuration::getStorageLocation() + "/config.ini", QSettings::IniFormat);
+    for (int i = 0; i < QColorDialog::customCount(); i++) {
+        col = QColorDialog::customColor(i);
+        settings.setValue("CustomColors/" + QString::number(i), col.name());
     }
 }
 

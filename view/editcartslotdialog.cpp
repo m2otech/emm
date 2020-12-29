@@ -109,7 +109,11 @@ EditCartSlotDialog::EditCartSlotDialog(int slotNumber,bool db, QWidget *parent) 
     QColor col;
     QSettings settings(Configuration::getStorageLocation() + "/config.ini", QSettings::IniFormat);
     for (int i = 0; i < QColorDialog::customCount(); i++) {
-        col.setNamedColor(settings.value("CustomColors/" + QString::number(i)).toString());
+        if (settings.contains("CustomColors/" + QString::number(i)))
+            col.setNamedColor(settings.value("CustomColors/" + QString::number(i)).toString());
+        else
+            col.setNamedColor("white");
+
         QColorDialog::setCustomColor(i, col);
     }
 }

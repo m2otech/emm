@@ -17,6 +17,9 @@ ExportLayerDialog::ExportLayerDialog(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    // Hide help icon from title bar
+    setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
+
     // Populate layer list
     Configuration *config = Configuration::getInstance();
     int layerCount = config->getLayers().count();

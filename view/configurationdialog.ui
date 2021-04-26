@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>594</width>
+    <width>623</width>
     <height>363</height>
    </rect>
   </property>
@@ -416,6 +416,9 @@
               <property name="bottomMargin">
                <number>0</number>
               </property>
+              <item row="0" column="2">
+               <widget class="QLineEdit" name="layerNameText"/>
+              </item>
               <item row="0" column="0">
                <widget class="QLabel" name="label_8">
                 <property name="text">
@@ -423,17 +426,17 @@
                 </property>
                </widget>
               </item>
-              <item row="0" column="1">
-               <widget class="QLineEdit" name="layerNameText"/>
-              </item>
-              <item row="1" column="0" colspan="2">
-               <widget class="QCheckBox" name="visibleCheckBox">
-                <property name="text">
-                 <string>sichtbar</string>
+              <item row="3" column="0">
+               <widget class="QSpinBox" name="layerPosition">
+                <property name="minimum">
+                 <number>1</number>
+                </property>
+                <property name="value">
+                 <number>99</number>
                 </property>
                </widget>
               </item>
-              <item row="2" column="0" colspan="2">
+              <item row="4" column="0" colspan="3">
                <spacer name="verticalSpacer_6">
                 <property name="orientation">
                  <enum>Qt::Vertical</enum>
@@ -445,6 +448,20 @@
                  </size>
                 </property>
                </spacer>
+              </item>
+              <item row="2" column="0" colspan="3">
+               <widget class="QCheckBox" name="visibleCheckBox">
+                <property name="text">
+                 <string>sichtbar</string>
+                </property>
+               </widget>
+              </item>
+              <item row="3" column="1">
+               <widget class="QLabel" name="label_14">
+                <property name="text">
+                 <string>Layer Position</string>
+                </property>
+               </widget>
               </item>
              </layout>
             </widget>

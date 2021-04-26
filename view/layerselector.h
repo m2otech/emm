@@ -27,6 +27,16 @@ public:
     explicit LayerSelector(QWidget *parent = 0);
     void setLayerCount(int count);
 
+    QList<int> getLayerOrder();
+
+    // Overriding standard function to factor in layer order (from configuration dialog)
+    int getSelectedButton();
+
+private:
+    void setLayerOrder();
+
+    QList<int> layers_allocated;
+
 signals:
 
 public slots:

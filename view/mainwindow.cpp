@@ -44,6 +44,7 @@
 #include "model/globaldata.h"
 #include "model/keyboardcontroller.h"
 #include "model/playlist.h"
+#include "model/layerdata.h"
 #include "playerwidget.h"
 #include "slotstoredialog.h"
 #include "slottablewidget.h"
@@ -715,6 +716,10 @@ int MainWindow::getLayerFirstSlotId() {
 
     int rows = conf->getVerticalSlots();
     int columns = conf->getHorizontalSlots();
+
+    // Get actual layer number (not display order)
+    //LayerData *data = Configuration::getInstance()->getLayers().value(layer);
+    //layer = data->getLayerID();
 
     return (layer * rows * columns);
 }

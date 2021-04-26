@@ -149,11 +149,14 @@ void ConfigurationDialog::selectionChanged() {
             layerId = ui->menuTree->currentIndex().row();
             disconnect(ui->layerNameText,0,0,0);
             disconnect(ui->visibleCheckBox,0,0,0);
+            disconnect(ui->layerPosition,0,0,0);
             Configuration *config = Configuration::getInstance();
             ui->layerNameText->setText(config->getLayers().value(layerId)->getName());
             ui->visibleCheckBox->setChecked(config->getLayers().value(layerId)->getVisible());
+            ui->layerPosition->setValue(config->getLayers().value(layerId)->getLayerPos());
             connect(ui->layerNameText, SIGNAL(textChanged(QString)), this, SLOT(updateLayerName(QString)));
             connect(ui->visibleCheckBox, SIGNAL(clicked(bool)), this, SLOT(updateLayerEnabled(bool)));
+            connect(ui->layerPosition, SIGNAL(valueChanged(int)), this, SLOT(updateLayerOrder(int)));
 
             // Show general layer settings only when general layer tab is shown
             ui->label_13->setVisible(false);
@@ -212,6 +215,19 @@ void ConfigurationDialog::updateLayerEnabled(bool enabled) {
 void ConfigurationDialog::updateLayerName(QString name) {
     Configuration *config = Configuration::getInstance();
     config->getLayers().value(layerId)->setName(name);
+}
+
+void ConfigurationDialog::updateLayerOrder(int position) {
+    Configuration *config = Configuration::getInstance();
+    int old_position = config->getLayers().value(layerId)->getLayerPos();
+
+    for (int i = 0; i < config->getLayers().size(); i++)
+    {
+        if (config->getLayers().value(i)->getLayerPos() == position)
+            config->getLayers().value(i)->setLayerPos(old_position);
+    }
+
+    config->getLayers().value(layerId)->setLayerPos(position);
 }
 
 void ConfigurationDialog::showRestartWarning(bool checked) {

@@ -31,6 +31,9 @@ public:
     bool getVisible();
     QString getName();
 
+    int getLayerPos();
+
+    void setLayerPos(int);
     void setVisible(bool visible);
     void setName(QString name);
 
@@ -38,6 +41,9 @@ private:
     int layerId;
     bool visible;
     QString name;
+
+    // layerPos is user-selectable (layerID is fixed)
+    int layerPos;
 
 };
 

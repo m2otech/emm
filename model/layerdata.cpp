@@ -27,6 +27,14 @@ int LayerData::getLayerID() {
     return this->layerId;
 }
 
+int LayerData::getLayerPos() {
+    return this->layerPos;
+}
+
+void LayerData::setLayerPos(int position) {
+    this->layerPos = position;
+}
+
 bool LayerData::getVisible() {
     return this->visible;
 }

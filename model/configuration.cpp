@@ -294,6 +294,7 @@ void Configuration::readData()
         LayerData *data = new LayerData(i+1);
         data->setName(settings.value("Layer"+QString::number(i+1)+"/Name","Layer "+QString::number(i+1)).toString());
         data->setVisible(settings.value("Layer"+QString::number(i+1)+"/Visible",true).toBool());
+        data->setLayerPos(settings.value("Layer"+QString::number(i+1)+"/Position", i+1).toInt());
         layers.insert(i,data);
     }
 }
@@ -333,6 +334,7 @@ void Configuration::saveData()
         LayerData *data = layers.value(i);
         settings.setValue("Layer"+QString::number(i+1)+"/Name",data->getName());
         settings.setValue("Layer"+QString::number(i+1)+"/Visible",data->getVisible());
+        settings.setValue("Layer"+QString::number(i+1)+"/Position",data->getLayerPos());
     }
 
     // m2: Re-allocate array holding slot counters and pause info

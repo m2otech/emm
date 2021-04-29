@@ -74,6 +74,9 @@ void ExportTitlesThread::run() {
                 // LAYER
                 QString layer = config->getLayers().value(exportLayers.at(i) - 1)->getName();
 
+                // SLOT ID
+                QString slotID = QString("Slot %1").arg(number);
+
                 // TITLE
                 QString title = slot->getText1();
 
@@ -96,7 +99,7 @@ void ExportTitlesThread::run() {
                 msecs2 = (int)floor((pos2-mins2*60-secs2)*1000);
                 QString starttime = QString("%1:%2.%3").arg(mins2,2, 10, QChar('0')).arg(secs2,2,10, QChar('0')).arg(msecs2, 3, 10, QChar('0'));
 
-                QString writeline = layer + '\t' + title + '\t' + starttime + '\t' + totaltime;
+                QString writeline = layer + '\t' + slotID + '\t' + title + '\t' + starttime + '\t' + totaltime;
 
                 // Write to file
                 stream << writeline << endl;

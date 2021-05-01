@@ -45,6 +45,7 @@ private slots:
     void updateLayerName(QString);
     void showRestartWarning(bool);
     void updateLayerOrder(int);
+    void resetLayerOrder();
 
     void increaseLayerCount();
     void decreaseLayerCount();

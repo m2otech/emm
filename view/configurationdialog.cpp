@@ -90,6 +90,7 @@ ConfigurationDialog::ConfigurationDialog(QWidget *parent) :
     connect(ui->showPlaylistButtonCheckBox, SIGNAL(clicked(bool)), this, SLOT(showRestartWarning(bool)));
     connect(ui->showRLACheckBox, SIGNAL(clicked(bool)), this, SLOT(showRestartWarning(bool)));
     connect(ui->showStopButtonCheckBox, SIGNAL(clicked(bool)), this, SLOT(showRestartWarning(bool)));
+    connect(ui->layerOrderResetButton, SIGNAL(clicked(bool)), this, SLOT(resetLayerOrder()));
 }
 
 ConfigurationDialog::~ConfigurationDialog()
@@ -228,6 +229,21 @@ void ConfigurationDialog::updateLayerOrder(int position) {
     }
 
     config->getLayers().value(layerId)->setLayerPos(position);
+}
+
+void ConfigurationDialog::resetLayerOrder()
+{
+    Configuration *config = Configuration::getInstance();
+
+    QMessageBox::StandardButton reply;
+    reply = QMessageBox::question(this, QString::fromUtf8("Reihenfolge Zurücksetzen"), "Soll die Layer-Reihenfolge wiederhergestellt werden?", QMessageBox::Yes|QMessageBox::No);
+    if (reply == QMessageBox::Yes)
+    {
+        for (int i = 0; i < config->getLayers().size(); i++)
+        {
+            config->getLayers().value(i)->setLayerPos(i+1);
+        }
+    }
 }
 
 void ConfigurationDialog::showRestartWarning(bool checked) {

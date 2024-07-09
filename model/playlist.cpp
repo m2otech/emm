@@ -20,6 +20,7 @@
 #include "model/audio/playlistplayer.h"
 #include "playlistentry.h"
 #include "playlist.h"
+#include <cmath>
 
 #include "view/mainwindow.h"
 
@@ -49,8 +50,8 @@ PlaylistEntry* Playlist::addEntry(QString filename, int pos)
     // m2: Update TOT LENGTH
     double remaining = this->getTotalLength();
     int mins2 = remaining/60;
-    int secs2 = floor(remaining-mins2*60);
-    int msecs2 = floor((remaining-mins2*60-secs2)*10);
+    int secs2 = std::floor(remaining-mins2*60);
+    int msecs2 = std::floor((remaining-mins2*60-secs2)*10);
     QString time = QString("TOT %1:%2.%3").arg(mins2, 2, 10, QChar('0')).arg(secs2,2,10, QChar('0')).arg(msecs2);
 
     if (time.size() > 0)

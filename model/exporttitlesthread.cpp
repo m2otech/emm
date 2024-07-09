@@ -21,6 +21,7 @@
 #include "model/configuration.h"
 #include "model/layerdata.h"
 #include "view/cartslotwidget.h"
+#include <cmath>
 
 #include "view/mainwindow.h"
 

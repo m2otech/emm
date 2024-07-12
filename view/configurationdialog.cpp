@@ -60,6 +60,8 @@ ConfigurationDialog::ConfigurationDialog(QWidget *parent) :
     ui->slotTimeSpinBox->setValue(config->getSlotTimeSize());
     ui->pauseCheckBox->setChecked(config->getPauseButton());
 
+    ui->slotFontSizeSpinBox->setValue(config->getDefaultFontSize());
+
     // m2: Options for layer bar
     ui->showPauseButtonCheckBox->setChecked(config->getLayerbarPauseButton());
     ui->showStopButtonCheckBox->setChecked(config->getLayerbarStopButton());

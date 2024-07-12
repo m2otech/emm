@@ -103,6 +103,9 @@ public slots:
     void play();
     void cartStop();
 
+    // m2: Added to call it from setFontThread
+    void setFontSize(int newFontSize);
+
 protected slots:
     virtual void updatePosition();
 

@@ -434,6 +434,11 @@ void CartSlot::saveData()
     }
 }
 
+void CartSlot::setFontSize(int newFontSize)
+{
+    fontSize = newFontSize;
+}
+
 CartSlot* CartSlot::getObjectWithNumber(int number, bool db)
 {
     if (db)

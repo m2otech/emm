@@ -260,6 +260,14 @@ void Configuration::setSlotTimeSize(int size) {
     this->slotTimeSize = size;
 }
 
+void Configuration::setDefaultFontSize(int size) {
+    this->defaultFontSize = size;
+}
+
+int Configuration::getDefaultFontSize() {
+    return this->defaultFontSize;
+}
+
 void Configuration::readData()
 {
     QSettings settings(Configuration::getStorageLocation() + "/config.ini", QSettings::IniFormat);
@@ -281,6 +289,9 @@ void Configuration::readData()
     pauseButton = settings.value("Slots/PauseButton",false).toBool();
     slotTimeSize = settings.value("Slots/TimeSize",10).toInt();
     pitchKeyboard = settings.value("Slots/PitchKeyboard",false).toBool();
+
+    // m2: added this
+    defaultFontSize = settings.value("Slots/TextSize",10).toInt();
 
     // m2: Options for layer bar
     layerbarShowPause = settings.value("Layerbar/PauseButton",true).toBool();
@@ -322,6 +333,9 @@ void Configuration::saveData()
     settings.setValue("Slots/PitchKeyboard",pitchKeyboard);
     BassDevice::setBuffer(slotBuffer);
     BassAsioDevice::setBuffer(slotBuffer);
+
+    //m2: set default text size for slots text
+    settings.setValue("Slots/TextSize", defaultFontSize);
 
     // m2: Options for layer bar
     settings.setValue("Layerbar/PauseButton", layerbarShowPause);

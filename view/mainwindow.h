@@ -135,6 +135,7 @@ private slots:
     void showSlotStore();
     void copyColors();
     void clearSlots();
+    void setSlotsFont();
     void setConfigDirectory();
     // m2: pause/stop running slots
     void pauseSlots();

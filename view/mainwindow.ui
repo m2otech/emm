@@ -869,6 +869,7 @@ font-weight:bold;</string>
     <addaction name="clearLayerAction"/>
     <addaction name="resetCountersAction"/>
     <addaction name="resetPitchesAction"/>
+    <addaction name="setSlotsFontAction"/>
     <addaction name="separator"/>
    </widget>
    <addaction name="fileMenu"/>
@@ -1058,6 +1059,11 @@ font-weight:bold;</string>
    </property>
    <property name="text">
     <string>Titel-Liste exportieren (alle Layer)</string>
+   </property>
+  </action>
+  <action name="setSlotsFontAction">
+   <property name="text">
+    <string>Default-Schriftgröße bei allen Slots in diesem Layer setzen</string>
    </property>
   </action>
  </widget>

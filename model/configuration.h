@@ -54,6 +54,9 @@ public:
     bool getLayerbarRLADisplay();
     bool getLayerbarPlaylistButton();
 
+    // m2: added this
+    int getDefaultFontSize();
+
     void setHorizontalSlots(int horizontalSlots);
     void setVerticalSlots(int verticalSlots);
     void setPFLDriver(int pflDriver);
@@ -71,6 +74,9 @@ public:
     void setLayerKeyboardSync(bool layerKeyboardSync);
     void setPitchKeyboard(bool);
     void setPauseButton(bool pauseButton);
+
+    // m2: added this
+    void setDefaultFontSize(int);
 
     // m2: Options for layer bar
     void setLayerbarPauseButton(bool);
@@ -118,6 +124,9 @@ private:
     bool layerbarShowPitch;
     bool layerbarShowPlaylist;
     bool layerbarShowRLA;
+
+    // m2: added this (default font size for slot text)
+    int defaultFontSize;
 
     void readData();
 };

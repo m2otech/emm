@@ -37,6 +37,7 @@
 #include "model/audio/playlistplayer.h"
 #include "model/audio/pluginloader.h"
 #include "model/clearlayerthread.h"
+#include "model/setfontthread.h"
 #include "model/resetpitchesthread.h"
 #include "model/exporttitlesthread.h"
 #include "model/configuration.h"
@@ -130,6 +131,7 @@ void MainWindow::init() {
     connect(ui->slotStoreAction, SIGNAL(triggered()), this, SLOT(showSlotStore()));
     connect(ui->colorAction, SIGNAL(triggered()), this, SLOT(copyColors()));
     connect(ui->clearLayerAction, SIGNAL(triggered()), this, SLOT(clearSlots()));
+    connect(ui->setSlotsFontAction, SIGNAL(triggered()), this, SLOT(setSlotsFont()));
     connect(ui->resetCountersAction, SIGNAL(triggered()), this, SLOT(resetCounters()));
     connect(ui->setConfigurationAction, SIGNAL(triggered()), this, SLOT(setConfigDirectory()));
     connect(ui->pauseAllButton, SIGNAL(clicked()), this, SLOT(pauseSlots()));
@@ -647,6 +649,27 @@ void MainWindow::clearSlots() {
     // m2: also reset slot counters when clearing layer slots
     this->resetCounters(false);
 }
+
+void MainWindow::setSlotsFont() {
+    int res = QMessageBox::question(this,tr("Wirklich setzen?"),tr("Soll die Default-Text-Schriftgröße (Globale Einstellungen) für alle Slots in diesem Layer gesetzt werden?"),QMessageBox::Yes,QMessageBox::No);
+    if (res == QMessageBox::No) {
+        return;
+    }
+
+    SetFontThread *clear = new SetFontThread(ui->layerSelector->getSelectedButton());
+    QProgressDialog *dia = new QProgressDialog(this);
+    dia->setCancelButton(NULL);
+    dia->setLabelText(tr("Schriftgröße setzen...."));
+    dia->setWindowFlags(Qt::Tool | Qt::WindowTitleHint | Qt::CustomizeWindowHint);
+    connect(clear,SIGNAL(updateStatus(int)), dia, SLOT(setValue(int)));
+    connect(clear,SIGNAL(updateMax(int)), dia, SLOT(setMaximum(int)));
+    connect(dia,SIGNAL(canceled()), clear, SLOT(quit()));
+    clear->start();
+    dia->exec();
+    int currentLayer = ui->layerSelector->getSelectedButton();
+    ui->slotTableWidget->updateSlots(currentLayer);
+}
+
 
 void MainWindow::exportTitlesDialog()
 {

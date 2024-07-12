@@ -130,6 +130,9 @@ void ConfigurationDialog::saveAndClose()
     config->setSlotTimeSize(ui->slotTimeSpinBox->value());
     config->setPauseButton(ui->pauseCheckBox->isChecked());
 
+    // m2:
+    config->setDefaultFontSize(ui->slotFontSizeSpinBox->value());
+
     config->setLayerbarPauseButton(ui->showPauseButtonCheckBox->isChecked());
     config->setLayerbarStopButton(ui->showStopButtonCheckBox->isChecked());
     config->setLayerbarPitchControl(ui->showPitchControlCheckBox->isChecked());

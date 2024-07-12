@@ -41,6 +41,7 @@ INCLUDEPATH += lib/header
 RC_FILE = emm.rc
 
 SOURCES += main.cpp\
+    model/setfontthread.cpp \
     view/exportlayerdialog.cpp \
     view/mainwindow.cpp \
     view/configurationdialog.cpp \
@@ -90,6 +91,7 @@ SOURCES += main.cpp\
 
 
 HEADERS += view/mainwindow.h \
+    model/setfontthread.h \
     view/configurationdialog.h \
     model/audio/bassdevice.h \
     view/cartslotwidget.h \

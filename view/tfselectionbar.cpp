@@ -24,10 +24,10 @@ TFSelectionBar::TFSelectionBar(QWidget *parent) :
     toolbar->setAllowedAreas(Qt::TopToolBarArea);
     toolbar->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
     toolbar->setOrientation(Qt::Horizontal);
-    toolbar->setFixedHeight(25);
-    toolbar->setIconSize(QSize(21,21));
+    toolbar->setFixedHeight(50);
+    toolbar->setIconSize(QSize(42,42));
 
-    setFixedHeight(25);
+    setFixedHeight(50);
 
     setStyleSheet(" \
             QWidget { \
@@ -45,7 +45,7 @@ TFSelectionBar::TFSelectionBar(QWidget *parent) :
                     background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(57, 57, 57, 255), stop:1 rgba(130, 130, 130, 255)); \
             } \
             QToolButton { \
-                    height:25px; \
+                    height:50px; \
                     border:0; \
                     padding-left:10px; \
                     padding-right:10px; \

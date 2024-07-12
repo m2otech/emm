@@ -153,14 +153,14 @@
            <widget class="QPushButton" name="pitchDownButton">
             <property name="minimumSize">
              <size>
-              <width>28</width>
-              <height>28</height>
+              <width>40</width>
+              <height>40</height>
              </size>
             </property>
             <property name="maximumSize">
              <size>
-              <width>28</width>
-              <height>28</height>
+              <width>40</width>
+              <height>40</height>
              </size>
             </property>
             <property name="text">
@@ -173,13 +173,13 @@
             <property name="minimumSize">
              <size>
               <width>56</width>
-              <height>28</height>
+              <height>40</height>
              </size>
             </property>
             <property name="maximumSize">
              <size>
               <width>56</width>
-              <height>28</height>
+              <height>40</height>
              </size>
             </property>
             <property name="font">
@@ -198,14 +198,14 @@
            <widget class="QPushButton" name="pitchUpButton">
             <property name="minimumSize">
              <size>
-              <width>28</width>
-              <height>28</height>
+              <width>40</width>
+              <height>40</height>
              </size>
             </property>
             <property name="maximumSize">
              <size>
-              <width>28</width>
-              <height>28</height>
+              <width>40</width>
+              <height>40</height>
              </size>
             </property>
             <property name="text">
@@ -258,14 +258,14 @@
            <widget class="QPushButton" name="dbDownButton">
             <property name="minimumSize">
              <size>
-              <width>28</width>
-              <height>28</height>
+              <width>40</width>
+              <height>40</height>
              </size>
             </property>
             <property name="maximumSize">
              <size>
-              <width>28</width>
-              <height>28</height>
+              <width>40</width>
+              <height>40</height>
              </size>
             </property>
             <property name="text">
@@ -278,13 +278,13 @@
             <property name="minimumSize">
              <size>
               <width>56</width>
-              <height>28</height>
+              <height>40</height>
              </size>
             </property>
             <property name="maximumSize">
              <size>
               <width>56</width>
-              <height>28</height>
+              <height>40</height>
              </size>
             </property>
             <property name="font">
@@ -303,14 +303,14 @@
            <widget class="QPushButton" name="dbUpButton">
             <property name="minimumSize">
              <size>
-              <width>28</width>
-              <height>28</height>
+              <width>40</width>
+              <height>40</height>
              </size>
             </property>
             <property name="maximumSize">
              <size>
-              <width>28</width>
-              <height>28</height>
+              <width>40</width>
+              <height>40</height>
              </size>
             </property>
             <property name="text">

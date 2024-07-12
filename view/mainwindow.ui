@@ -1062,6 +1062,10 @@ font-weight:bold;</string>
    </property>
   </action>
   <action name="setSlotsFontAction">
+   <property name="icon">
+    <iconset resource="icons.qrc">
+     <normaloff>:/icons/pencil.png</normaloff>:/icons/pencil.png</iconset>
+   </property>
    <property name="text">
     <string>Default-Schriftgröße bei allen Slots in diesem Layer setzen</string>
    </property>

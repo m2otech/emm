@@ -437,6 +437,8 @@ void CartSlot::saveData()
 void CartSlot::setFontSize(int newFontSize)
 {
     fontSize = newFontSize;
+    QSettings settings(Configuration::getStorageLocation() + "/slots.ini", QSettings::IniFormat);
+    settings.setValue("Slot"+QString::number(number)+"/FontSize",fontSize);
 }
 
 CartSlot* CartSlot::getObjectWithNumber(int number, bool db)
